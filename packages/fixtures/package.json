@@ -1,6 +1,6 @@
 {
   "name": "@yellowparrottech/abdm-fixtures",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Seeded synthetic patients, consents and FHIR bundles",
   "keywords": [
     "abdm",

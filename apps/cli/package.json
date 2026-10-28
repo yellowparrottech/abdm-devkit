@@ -1,6 +1,6 @@
 {
   "name": "@yellowparrottech/abdm-devkit",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Command-line tool for the YellowParrot ABDM DevKit: run the mock environment as a local REST API",
   "keywords": [
     "abdm",

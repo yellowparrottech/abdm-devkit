@@ -1,6 +1,6 @@
 {
   "name": "@yellowparrottech/abdm-rest-adapter",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "HTTP API over the ABDM workflows, for apps that do not use MCP",
   "keywords": [
     "abdm",

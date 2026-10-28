@@ -1,6 +1,6 @@
 {
   "name": "@yellowparrottech/abdm-consent-engine",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Consent artefacts, policy checks and consent state machines",
   "keywords": [
     "abdm",

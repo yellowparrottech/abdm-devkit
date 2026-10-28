@@ -1,6 +1,6 @@
 {
   "name": "@yellowparrottech/abdm-fhir",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Build and structurally validate ABDM FHIR document bundles (NRCeS IG 6.5.0 profiles)",
   "keywords": [
     "abdm",

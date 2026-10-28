@@ -1,6 +1,6 @@
 {
   "name": "@yellowparrottech/abdm-mock-gateway",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Deterministic offline ABDM gateway with consent and callback scenarios",
   "keywords": [
     "abdm",

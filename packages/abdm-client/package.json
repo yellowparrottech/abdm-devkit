@@ -1,6 +1,6 @@
 {
   "name": "@yellowparrottech/abdm-client",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Typed ABDM V2/V3 HTTP client with per-flow version selection",
   "keywords": [
     "abdm",

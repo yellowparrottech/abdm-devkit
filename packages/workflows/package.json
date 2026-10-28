@@ -1,6 +1,6 @@
 {
   "name": "@yellowparrottech/abdm-workflows",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "MCP-independent ABDM workflows: consent requests, approvals, authorisation and audit",
   "keywords": [
     "abdm",

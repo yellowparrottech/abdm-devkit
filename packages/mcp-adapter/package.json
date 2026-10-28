@@ -1,6 +1,6 @@
 {
   "name": "@yellowparrottech/abdm-mcp-adapter",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "MCP workflow tools with exposure tiers and server-side policy",
   "keywords": [
     "abdm",
