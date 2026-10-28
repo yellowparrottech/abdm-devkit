@@ -52,7 +52,7 @@
     "build": "tsc -b"
   },
   "dependencies": {
-    "@modelcontextprotocol/server": "2.3.1",
+    "@modelcontextprotocol/server": "2.4.0",
     "zod": "4.6.7",
     "@yellowparrottech/abdm-core": "workspace:*",
     "@yellowparrottech/abdm-consent-engine": "workspace:*",
@@ -60,7 +60,7 @@
     "@yellowparrottech/abdm-fhir": "workspace:*"
   },
   "devDependencies": {
-    "@modelcontextprotocol/client": "2.3.1",
+    "@modelcontextprotocol/client": "2.4.0",
     "@yellowparrottech/abdm-fixtures": "workspace:*",
     "@yellowparrottech/abdm-mock-gateway": "workspace:*"
   }
