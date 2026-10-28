@@ -52,7 +52,7 @@
     "build": "tsc -b"
   },
   "dependencies": {
-    "hono": "4.13.13",
+    "hono": "4.13.14",
     "zod": "4.6.7",
     "@yellowparrottech/abdm-core": "workspace:*",
     "@yellowparrottech/abdm-fhir": "workspace:*",
