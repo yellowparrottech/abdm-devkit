@@ -19,7 +19,7 @@ Every record ABDM moves is encrypted by the sender so that only the intended rec
 
 ## How we know it is right
 
-ABDM's reference tool comes with published test examples: fixed keys and numbers, and the exact encrypted output they must produce. The DevKit reproduces all seven examples exactly. It also rejects damaged data, the wrong key and the wrong random number, and malformed keys.
+ABDM's reference tool comes with published test examples: fixed keys and numbers, and the exact encrypted output they must produce. The DevKit reproduces all seven examples exactly. It also rejects damaged data, the wrong key and the wrong random number, and malformed keys. See the [tests](https://github.com/yellowparrottech/abdm-devkit/blob/main/packages/crypto-adapter/src/fidelius.test.ts) and the [reference examples](https://github.com/yellowparrottech/abdm-devkit/tree/main/packages/crypto-adapter/test-vectors) they use.
 
 <details>
 <summary>Technical details</summary>

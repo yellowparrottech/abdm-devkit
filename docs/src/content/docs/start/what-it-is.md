@@ -55,14 +55,16 @@ Each feature is labelled by how far it has been tested:
 - **Experimental**: built and tested on its own, not yet tested with ABDM.
 - **Not yet verified**: being built against ABDM's test system.
 
-| Feature | Status |
-| --- | --- |
-| Practice ABDM with a simulated patient and hospital | Mock-tested |
-| Consent requests and record fetches, with approvals and safety checks | Mock-tested |
-| ABDM's encryption | Vector-tested: all 7 published reference examples; real ABDM data not yet tried |
-| Building and checking health records (FHIR) | Partial: structure checks only; full format checks planned |
-| AI assistant tools (MCP) and Claude Desktop extension | Mock-tested with the official MCP client libraries; not yet tried in Claude Desktop |
-| REST API and command-line tool | Mock-tested |
-| Receiving ABDM's messages on a server (callback bridge) | Experimental |
-| Connecting to ABDM's test system (sandbox) | Not yet verified: waiting for sandbox access |
-| Use with real patient data | Not available |
+The tests run on every change to the code, on Node.js 22 and 24. See the [latest results](https://github.com/yellowparrottech/abdm-devkit/actions/workflows/ci.yml); the evidence column links to the tests behind each label.
+
+| Feature | Status | Evidence |
+| --- | --- | --- |
+| Practice ABDM with a simulated patient and hospital | Mock-tested | [End-to-end flow](https://github.com/yellowparrottech/abdm-devkit/blob/main/tests/integration/consent-flow.test.ts) |
+| Consent requests and record fetches, with approvals and safety checks | Mock-tested | [Consent](https://github.com/yellowparrottech/abdm-devkit/blob/main/packages/workflows/src/consent-workflows.test.ts), [records](https://github.com/yellowparrottech/abdm-devkit/blob/main/packages/workflows/src/health-info-workflows.test.ts), [review fixes](https://github.com/yellowparrottech/abdm-devkit/blob/main/packages/workflows/src/review-regressions.test.ts) |
+| ABDM's encryption | Vector-tested: all 7 published reference examples; real ABDM data not yet tried | [Tests](https://github.com/yellowparrottech/abdm-devkit/blob/main/packages/crypto-adapter/src/fidelius.test.ts), [reference examples](https://github.com/yellowparrottech/abdm-devkit/tree/main/packages/crypto-adapter/test-vectors) |
+| Building and checking health records (FHIR) | Partial: structure checks only; full format checks planned | [Tests](https://github.com/yellowparrottech/abdm-devkit/blob/main/packages/fhir/src/fhir.test.ts) |
+| AI assistant tools (MCP) and Claude Desktop extension | Mock-tested with the official MCP client libraries; not yet tried in Claude Desktop | [Tools](https://github.com/yellowparrottech/abdm-devkit/blob/main/packages/mcp-adapter/src/server.test.ts), [running server](https://github.com/yellowparrottech/abdm-devkit/blob/main/tests/e2e/stdio-server.test.ts) |
+| REST API and command-line tool | Mock-tested | [Tests](https://github.com/yellowparrottech/abdm-devkit/blob/main/packages/rest-adapter/src/app.test.ts) |
+| Receiving ABDM's messages on a server (callback bridge) | Experimental | [Bridge](https://github.com/yellowparrottech/abdm-devkit/blob/main/apps/callback-bridge/src/bridge.test.ts), [encryption](https://github.com/yellowparrottech/abdm-devkit/blob/main/apps/callback-bridge/src/encrypted-store.test.ts), [collecting](https://github.com/yellowparrottech/abdm-devkit/blob/main/tests/integration/bridge-inbox.test.ts) |
+| Connecting to ABDM's test system (sandbox) | Not yet verified: waiting for sandbox access | None yet |
+| Use with real patient data | Not available | None |

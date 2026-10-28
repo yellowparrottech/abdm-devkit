@@ -1,5 +1,7 @@
 # YellowParrot ABDM DevKit
 
+[![CI](https://github.com/yellowparrottech/abdm-devkit/actions/workflows/ci.yml/badge.svg)](https://github.com/yellowparrottech/abdm-devkit/actions/workflows/ci.yml) [![Licence: Apache-2.0](https://img.shields.io/badge/licence-Apache--2.0-blue)](LICENSE)
+
 Build, simulate and validate ABDM integrations without starting with live credentials.
 
 An unofficial, open-source toolkit for building software that connects to ABDM (the Ayushman Bharat Digital Mission), India's national system for sharing health records with the patient's consent. It includes a practice version of ABDM with made-up data, building blocks for consent, encryption and health records, a REST API for any language, and tools for AI assistants such as Claude.

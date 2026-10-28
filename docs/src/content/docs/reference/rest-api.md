@@ -5,7 +5,7 @@ description: Endpoints of the DevKit's REST adapter.
 
 All paths start with `/v1` and need `Authorization: Bearer <token>`. Anything that sends a request uses two calls: `prepare` returns a summary for your user, then you send the `approvalId` with the same request. The [curl walkthrough](/guides/rest-api/) shows every call with real responses.
 
-**Machine-readable description:** [OpenAPI 3.1](/openapi.json), also served by every running DevKit at `GET /v1/openapi.json`. It is generated from the same schemas the API validates with, and the test suite checks every real response against it. Use it to generate clients in Go, Java, Python or other languages.
+**Machine-readable description:** [OpenAPI 3.1](/openapi.json), also served by every running DevKit at `GET /v1/openapi.json`. It is generated from the same schemas the API validates with, and the [test suite](https://github.com/yellowparrottech/abdm-devkit/blob/main/packages/rest-adapter/src/app.test.ts) checks every real response against it. Use it to generate clients in Go, Java, Python or other languages.
 
 **Status:** all endpoints are mock-tested; none have yet been run against ABDM's test system.
 

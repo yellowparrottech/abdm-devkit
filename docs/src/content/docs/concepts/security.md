@@ -27,7 +27,7 @@ Reading records changes nothing, but it can reveal very sensitive information. S
 
 ## Code reviews so far
 
-In October 2026 the code had two internal reviews, each done by an AI agent working separately from the author and given only the code. They found eight defects, including two record deliveries being accepted at once, records kept after consent was withdrawn, and replayed callbacks being accepted. All eight are fixed, each with an automated test that fails if the problem comes back.
+In October 2026 the code had two internal reviews, each done by an AI agent working separately from the author and given only the code. They found eight defects, including two record deliveries being accepted at once, records kept after consent was withdrawn, and replayed callbacks being accepted. All eight are fixed, each with an automated test that fails if the problem comes back: see the [workflow tests](https://github.com/yellowparrottech/abdm-devkit/blob/main/packages/workflows/src/review-regressions.test.ts) and the [callback bridge tests](https://github.com/yellowparrottech/abdm-devkit/blob/main/apps/callback-bridge/src/bridge.test.ts). They run on [every change](https://github.com/yellowparrottech/abdm-devkit/actions/workflows/ci.yml).
 
 These were **not independent or third-party security audits**. An external review is planned before the DevKit is used with real patient data.
 
