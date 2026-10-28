@@ -1,0 +1,12 @@
+---
+/** Shared arrowhead marker; include once per diagram and reference it as url(#<id>). */
+interface Props {
+  id: string;
+}
+const { id } = Astro.props;
+---
+<defs>
+  <marker id={id} viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M0 0L10 5L0 10z" class="arrowhead" />
+  </marker>
+</defs>

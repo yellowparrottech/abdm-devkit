@@ -1,0 +1,32 @@
+name: Something is not working
+description: Report a bug in the DevKit.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **Never include real patient data, ABHA or Aadhaar numbers, OTPs, tokens or credentials.** Use the DevKit's made-up data to show the problem.
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened, and what did you expect?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: Commands, requests or code, using made-up data only.
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: DevKit version or commit
+  - type: dropdown
+    id: environment
+    attributes:
+      label: Where were you connecting?
+      options: [Practice ABDM (mock), ABDM test system (sandbox), A certified service]
+    validations:
+      required: true

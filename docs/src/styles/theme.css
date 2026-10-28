@@ -1,0 +1,121 @@
+/* YellowParrot yellow as the accent, with enough contrast for text in both themes. */
+:root {
+  --sl-color-accent-low: #3b3000;
+  --sl-color-accent: #d9a800;
+  --sl-color-accent-high: #ffe58a;
+}
+:root[data-theme="light"] {
+  --sl-color-accent-low: #fff4cc;
+  --sl-color-accent: #8a6a00;
+  --sl-color-accent-high: #4d3b00;
+}
+
+/* Hero panel: real output from examples/python against the mock environment. */
+.hero-run {
+  border: 1px solid var(--sl-color-gray-5);
+  border-radius: 0.75rem;
+  background: var(--sl-color-gray-6);
+  overflow: hidden;
+  text-align: start;
+  max-width: 34rem;
+  box-shadow: var(--sl-shadow-md);
+}
+.hero-run__bar {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.6rem 0.9rem;
+  border-bottom: 1px solid var(--sl-color-gray-5);
+}
+.hero-run__bar span {
+  width: 0.65rem;
+  height: 0.65rem;
+  border-radius: 50%;
+  background: var(--sl-color-gray-4);
+}
+.hero-run__bar em {
+  margin-inline-start: 0.5rem;
+  font-style: normal;
+  font-size: var(--sl-text-xs);
+  color: var(--sl-color-gray-3);
+}
+.hero-run pre {
+  margin: 0;
+  padding: 1rem 1.1rem;
+  font-size: var(--sl-text-xs);
+  line-height: 1.7;
+  white-space: pre-wrap;
+  background: transparent;
+  border: 0;
+}
+.hero-run b {
+  color: var(--sl-color-white);
+  font-weight: 600;
+}
+.hero-run i {
+  color: var(--sl-color-accent-high);
+  font-style: normal;
+}
+
+/* Diagrams: inline SVG that follows the light and dark themes. On narrow screens the diagram
+   scrolls sideways inside its frame instead of shrinking its text. */
+.diagram {
+  margin: 1.75rem 0;
+  overflow-x: auto;
+}
+.diagram svg {
+  display: block;
+  width: 100%;
+  min-width: 600px;
+  height: auto;
+}
+.diagram figcaption {
+  margin-top: 0.5rem;
+  font-size: var(--sl-text-sm);
+  color: var(--sl-color-gray-3);
+}
+.diagram .box {
+  fill: var(--sl-color-gray-6);
+  stroke: var(--sl-color-gray-4);
+  stroke-width: 1.25;
+}
+.diagram .accent {
+  fill: var(--sl-color-accent-low);
+  stroke: var(--sl-color-accent);
+  stroke-width: 2;
+}
+.diagram .title {
+  fill: var(--sl-color-white);
+  font: 600 15px var(--sl-font);
+}
+.diagram .sub {
+  fill: var(--sl-color-gray-2);
+  font: 400 13px var(--sl-font);
+}
+.diagram .label {
+  fill: var(--sl-color-gray-2);
+  font: 400 13px var(--sl-font);
+  /* A halo in the page colour masks any line passing behind the label. */
+  paint-order: stroke;
+  stroke: var(--sl-color-bg);
+  stroke-width: 6px;
+  stroke-linejoin: round;
+}
+.diagram .line {
+  fill: none;
+  stroke: var(--sl-color-gray-3);
+  stroke-width: 1.5;
+}
+.diagram .dashed {
+  stroke-dasharray: 5 5;
+}
+.diagram .arrowhead {
+  fill: var(--sl-color-gray-3);
+}
+.diagram .badge {
+  fill: var(--sl-color-accent);
+}
+.diagram .badge-text {
+  fill: var(--sl-color-black);
+  font: 700 13px var(--sl-font);
+}

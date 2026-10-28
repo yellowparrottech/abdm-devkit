@@ -1,0 +1,107 @@
+---
+title: Quickstart
+description: Run the practice ABDM on your computer and request consent and a record, with made-up data.
+sidebar:
+  order: 3
+---
+
+import { Aside, Steps } from "@astrojs/starlight/components";
+
+In about five minutes you will run a practice version of ABDM on your computer, ask a made-up patient for consent, and receive an encrypted health record. No ABDM account is needed and nothing leaves your computer.
+
+<Aside type="note">
+The source code is being published to GitHub now. If the repository looks empty, check back shortly.
+</Aside>
+
+## Before you start
+
+You need **Node.js 22 or later** ([download](https://nodejs.org)) and **Python 3** (already on most Macs and Linux machines). Check with:
+
+```sh
+node --version
+python3 --version
+```
+
+The steps use **pnpm**, which Node.js 22 and 24 can switch on with `corepack enable`. Node.js 25 and later no longer include Corepack; install it first:
+
+```sh
+npm install -g corepack
+```
+
+## Run it
+
+<Steps>
+
+1. **Get the code and build it.**
+
+    ```sh
+    git clone https://github.com/yellowparrottech/abdm-devkit.git
+    cd abdm-devkit
+    corepack enable
+    pnpm install
+    pnpm build
+    ```
+
+2. **Start the practice ABDM.** Leave this terminal open.
+
+    ```sh
+    node apps/cli/dist/main.js mock
+    ```
+
+    You will see a local address and a one-time password (a "token"):
+
+    ```text
+    Mock ABDM environment (synthetic data only) at http://127.0.0.1:8787/v1
+    ABDM_DEVKIT_TOKEN=pVIKaNteEHa6-3dC_PeRjSYn1JocDXs1
+    Facility ID for consent requests: HIU-DEMO-01
+    ```
+
+3. **In a second terminal, run the example**, pasting your token. It shows each request and asks you to approve it: type `y` and press Enter.
+
+    ```sh
+    cd abdm-devkit
+    ABDM_DEVKIT_TOKEN=paste-your-token-here python3 examples/python/consent_and_fetch.py
+    ```
+
+4. **Watch the flow.** Within about ten seconds you will see:
+
+    ```text
+    Consent request to approve:
+      Request consent from asha.rao1@sbx for Care Management
+      Records: Prescription, DiagnosticReport
+      ...
+    Approve and send? [y/N]: y
+    Waiting for the simulated patient to respond...
+    Granted by HIP-DEMO-01 for Prescription, DiagnosticReport
+    Fetch to approve:
+      Fetch health records from HIP-DEMO-01 under consent mock-cr-1-artefact-1
+      ...
+    Approve and send? [y/N]: y
+    Waiting for the encrypted records...
+    Received Prescription: Prescription (synthetic) (1691 bytes, decrypted by the DevKit)
+    ```
+
+    `HIP-DEMO-01` is the made-up hospital that holds the records, and the long ID after "under consent" identifies what the patient approved. [ABDM in plain words](/start/abdm-basics/) explains both.
+
+</Steps>
+
+## What just happened
+
+The example asked a made-up patient for consent, the simulated patient approved, the simulated hospital encrypted a prescription for you, and the DevKit decrypted it. [Consent and approvals](/concepts/consent-and-approvals/) walks through each step with a diagram.
+
+## If something goes wrong
+
+| You see | Fix |
+| --- | --- |
+| `pnpm: command not found` | Run `corepack enable` first. On Node.js 25 or later, run `npm install -g corepack` before it. |
+| `corepack: command not found` | You are on Node.js 25 or later: run `npm install -g corepack`, then `corepack enable`. |
+| `Nobody to ask for approval` | The example needs a terminal to ask you. Run it directly, or add `--yes` for an unattended demo. |
+| `KeyError: 'ABDM_DEVKIT_TOKEN'` | Put `ABDM_DEVKIT_TOKEN=...` before `python3`, using the token from step 2. |
+| `failed with 401` | The token is wrong or from an earlier run. Copy the one printed by the running command. |
+| `Connection refused` | The practice ABDM in step 2 is not running, or stopped. Start it again. |
+| `address already in use` | Another program uses port 8787. Run `node apps/cli/dist/main.js mock --port 8788` and add `ABDM_DEVKIT_URL=http://127.0.0.1:8788/v1` to the example command. |
+
+## Next
+
+- Do the same by chatting with Claude: [Claude Desktop](/guides/claude-desktop/).
+- Connect your own app: [REST API from any language](/guides/rest-api/).

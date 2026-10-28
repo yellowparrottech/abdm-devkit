@@ -1,0 +1,81 @@
+---
+title: Open-source ABDM developer toolkit
+description: Build, simulate and validate ABDM integrations without starting with live credentials. Unofficial, open source, Apache-2.0.
+template: splash
+hero:
+  title: YellowParrot ABDM DevKit
+  image:
+    html: |
+      <div class="hero-run" aria-label="Output of the Python example against the mock environment">
+        <div class="hero-run__bar"><span></span><span></span><span></span><em>examples/python, mock environment</em></div>
+        <pre><code><b>Consent request to approve:</b>
+        Request consent from asha.rao1@sbx for Care Management
+        Records: Prescription, DiagnosticReport
+      Waiting for the simulated patient to respond...
+      <i>Granted by HIP-DEMO-01</i>
+      <b>Fetch to approve:</b>
+        Fetch health records from HIP-DEMO-01
+      Waiting for the encrypted records...
+      <i>Received Prescription (1691 bytes,
+        decrypted by the DevKit)</i></code></pre>
+      </div>
+  tagline: Build, simulate and validate ABDM integrations without starting with live credentials.
+  actions:
+    - text: Try it in your browser
+      link: /start/walkthrough/
+      icon: right-arrow
+    - text: Quickstart
+      link: /start/quickstart/
+      variant: secondary
+    - text: View on GitHub
+      link: https://github.com/yellowparrottech/abdm-devkit
+      icon: external
+      variant: minimal
+---
+
+import { Card, CardGrid, Aside } from "@astrojs/starlight/components";
+import ChooseYourPath from "../../components/ChooseYourPath.astro";
+import DevKitLayers from "../../components/DevKitLayers.astro";
+
+<Aside type="caution" title="Unofficial and pre-release">
+Not affiliated with, endorsed by or certified by the National Health Authority (NHA) or ABDM. Today it runs a **built-in practice version of ABDM with made-up data only**; connecting to the real ABDM test system is being built. It is not a medical device.
+</Aside>
+
+**ABDM** is India's national system for sharing a patient's health records between hospitals, clinics and labs, only with the patient's consent. Building software for it is hard to start: you need test credentials, a public server, special encryption and records in a specific format before anything works.
+
+The DevKit gives you all of that in one free, open-source toolkit, with a **practice version of ABDM built in**, so you can see and test the whole flow on your own computer in minutes. New to ABDM? Read [ABDM in plain words](/start/abdm-basics/) first.
+
+## Start here
+
+<ChooseYourPath />
+
+## What you get
+
+<CardGrid>
+  <Card title="Practice ABDM, built in" icon="rocket">
+    A stand-in for ABDM and a hospital, with made-up patients. Try approvals, refusals, expiry, lost and repeated messages, and encrypted record transfer, all offline.
+  </Card>
+  <Card title="Consent done right" icon="approve-check">
+    Every request needs an approval your app shows to a person, tied to that exact request. The DevKit refuses anything outside what the patient agreed to, and deletes records when consent ends.
+  </Card>
+  <Card title="ABDM's encryption, ready to use" icon="seti:lock">
+    Records are encrypted exactly the way ABDM requires, checked against ABDM's published reference examples.
+  </Card>
+  <Card title="Works with your stack" icon="puzzle">
+    TypeScript libraries, a REST API for any language, and tools for AI assistants such as Claude.
+  </Card>
+</CardGrid>
+
+## How it fits together
+
+<DevKitLayers />
+
+| Where it connects | You need | Status |
+| --- | --- | --- |
+| Practice ABDM (mock) | Nothing | Works today |
+| ABDM's test system (sandbox) | Your own sandbox account from NHA | Being built |
+| Real ABDM (production) | A service certified by NHA | Planned |
+
+Using real patient data always requires your own registration and certification with NHA. The DevKit helps you build and test; it does not replace that.
+
+Built by [YellowParrot Technologies](https://yellowparrottech.com) · Open source under [Apache-2.0](https://github.com/yellowparrottech/abdm-devkit/blob/main/LICENSE)

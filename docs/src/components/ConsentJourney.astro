@@ -1,0 +1,47 @@
+---
+import Arrow from "./Arrow.astro";
+const a = "url(#journey-arrow)";
+const heads = [
+  { x: 105, name: "Your app or AI" },
+  { x: 315, name: "DevKit" },
+  { x: 525, name: "ABDM and patient" },
+  { x: 715, name: "Hospital (HIP)" },
+];
+---
+<figure class="diagram">
+  <svg viewBox="0 0 820 580" role="img" aria-label="The consent and records journey in six steps: prepare and approve a consent request, the patient approves, approve a fetch, the hospital sends encrypted records, and the DevKit returns them after checking consent again">
+    <Arrow id="journey-arrow" />
+    {heads.map((h) => (
+      <g>
+        <line class="line dashed" x1={h.x} y1="70" x2={h.x} y2="560" />
+        <rect class={h.name === "DevKit" ? "accent" : "box"} x={h.x - 80} y="20" width="160" height="50" rx="10" />
+        <text class="title" x={h.x} y="50" text-anchor="middle" style="font-size:14px">{h.name}</text>
+      </g>
+    ))}
+    <g class="line">
+      <path d="M105 115 H311" marker-end={a} />
+      <path d="M315 150 H109" class="dashed" marker-end={a} />
+      <path d="M105 200 H311" marker-end={a} />
+      <path d="M315 235 H521" marker-end={a} />
+      <path d="M525 335 H319" class="dashed" marker-end={a} />
+      <path d="M105 385 H311" marker-end={a} />
+      <path d="M315 420 H521" marker-end={a} />
+      <path d="M525 455 H711" marker-end={a} />
+      <path d="M715 500 H319" marker-end={a} />
+      <path d="M315 540 H109" class="dashed" marker-end={a} />
+    </g>
+    <text class="label" x="210" y="106" text-anchor="middle">1 Prepare consent request</text>
+    <text class="label" x="210" y="141" text-anchor="middle">summary for your user</text>
+    <text class="label" x="210" y="191" text-anchor="middle">2 Your user approves</text>
+    <text class="label" x="420" y="226" text-anchor="middle">send request</text>
+    <rect class="box" x="405" y="260" width="240" height="40" rx="8" />
+    <text class="sub" x="525" y="285" text-anchor="middle">patient approves in ABHA app</text>
+    <text class="label" x="420" y="326" text-anchor="middle">3 Consent granted</text>
+    <text class="label" x="210" y="376" text-anchor="middle">4 Approve a fetch</text>
+    <text class="label" x="420" y="411" text-anchor="middle">ask + one-time key</text>
+    <text class="label" x="620" y="446" text-anchor="middle">pass on request</text>
+    <text class="label" x="520" y="491" text-anchor="middle">5 Encrypted records</text>
+    <text class="label" x="210" y="531" text-anchor="middle">6 Records, if still allowed</text>
+  </svg>
+  <figcaption>A consent request and a record fetch, start to finish. Dashed arrows are replies.</figcaption>
+</figure>

@@ -1,0 +1,58 @@
+{
+  "name": "@yellowparrottech/abdm-mock-gateway",
+  "version": "0.0.0",
+  "description": "Deterministic offline ABDM gateway with consent and callback scenarios",
+  "keywords": [
+    "abdm",
+    "abha",
+    "ayushman-bharat",
+    "health",
+    "fhir",
+    "consent",
+    "india"
+  ],
+  "homepage": "https://abdm.yellowparrottech.com",
+  "bugs": {
+    "url": "https://github.com/yellowparrottech/abdm-devkit/issues"
+  },
+  "license": "Apache-2.0",
+  "author": "YellowParrot Technologies Private Limited",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yellowparrottech/abdm-devkit.git",
+    "directory": "packages/mock-gateway"
+  },
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "sideEffects": false,
+  "files": [
+    "dist",
+    "!dist/.tsbuildinfo",
+    "src",
+    "!src/**/*.test.ts",
+    "README.md",
+    "LICENSE",
+    "NOTICE"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "scripts": {
+    "build": "tsc -b"
+  },
+  "dependencies": {
+    "@yellowparrottech/abdm-core": "workspace:*",
+    "@yellowparrottech/abdm-consent-engine": "workspace:*",
+    "@yellowparrottech/abdm-crypto": "workspace:*",
+    "@yellowparrottech/abdm-fixtures": "workspace:*"
+  }
+}

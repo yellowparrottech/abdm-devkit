@@ -1,0 +1,182 @@
+---
+title: REST API from any language
+description: A complete walkthrough with curl, from preparing a consent request to reading the decrypted record, with real responses from the practice ABDM.
+sidebar:
+  order: 2
+---
+
+import { Aside, Steps } from "@astrojs/starlight/components";
+
+The DevKit's REST API works from any language that can make HTTP requests. This guide uses `curl` so every request is visible; the responses shown are real output from the practice ABDM. The full machine-readable description is the [OpenAPI 3.1 document](/openapi.json), which you can feed to a client generator.
+
+**Status: mock-tested.** These calls run end to end against the practice ABDM. They have not yet been run against ABDM's test system.
+
+## The rules
+
+1. **Authenticate every call** with `Authorization: Bearer <token>`. Your server's `authenticate` function turns the token into a DevKit user; anything unknown gets `401`.
+2. **Prepare, show, then send.** Anything that reaches ABDM takes two calls. `prepare` returns a plain-English `summary` and an `approvalId`. Your app shows the summary to the logged-in person and sends only if they agree, posting the `approvalId` with **exactly the same request**.
+3. **Results arrive later.** ABDM answers asynchronously, so poll the `GET` endpoint until the state is final.
+
+## Walkthrough
+
+Start the practice ABDM (`node apps/cli/dist/main.js mock`) and set its address and token in your shell:
+
+```sh
+U=http://127.0.0.1:8787/v1
+H=(-H "Authorization: Bearer $ABDM_DEVKIT_TOKEN" -H "Content-Type: application/json")
+```
+
+<Steps>
+
+1. **Prepare a consent request.** Nothing is sent to ABDM yet.
+
+    ```sh
+    curl -s "${H[@]}" -X POST $U/consent-requests/prepare -d '{
+      "patientAbhaAddress": "asha.rao1@sbx",
+      "hiuId": "HIU-DEMO-01",
+      "requesterName": "Dr Demo",
+      "purpose": "CAREMGT",
+      "hiTypes": ["Prescription"],
+      "dateRange": { "from": "2025-01-01T00:00:00.000Z", "to": "2025-12-31T23:59:59.000Z" },
+      "expiresAt": "2026-12-31T00:00:00.000Z"
+    }'
+    ```
+
+    ```json
+    {
+      "approvalId": "01539878-0751-4b33-8ee6-dbd77112f01d",
+      "environment": "mock",
+      "summary": [
+        "Request consent from asha.rao1@sbx for Care Management",
+        "Records: Prescription",
+        "Period: 2025-01-01 to 2025-12-31",
+        "Access ends: 2026-12-31",
+        "Requested by: Dr Demo for HIU-DEMO-01"
+      ],
+      "expiresAt": "2026-10-28T00:35:22.288Z"
+    }
+    ```
+
+2. **Show the summary to the person. If they approve, send it** with the `approvalId` and the same request. The reply is `201`.
+
+    ```sh
+    curl -s "${H[@]}" -X POST $U/consent-requests -d '{
+      "approvalId": "01539878-0751-4b33-8ee6-dbd77112f01d",
+      "request": { ...exactly the request from step 1... }
+    }'
+    ```
+
+    ```json
+    { "requestId": "c9d56455-269d-4327-a04b-9819a92f6238", "state": "requested", "artefacts": [], "updatedAt": "2026-10-28T00:25:22.288Z" }
+    ```
+
+3. **Poll until the patient decides.** The state moves from `requested` to `pending_patient`, then to `granted`, `denied` or `expired`. In the practice ABDM this takes about five seconds.
+
+    ```sh
+    curl -s "${H[@]}" $U/consent-requests/c9d56455-269d-4327-a04b-9819a92f6238
+    ```
+
+    ```json
+    {
+      "requestId": "c9d56455-269d-4327-a04b-9819a92f6238",
+      "consentRequestId": "mock-cr-1",
+      "state": "granted",
+      "artefacts": [
+        {
+          "id": "mock-cr-1-artefact-1",
+          "hipId": "HIP-DEMO-01",
+          "hiTypes": ["Prescription"],
+          "dateRange": { "from": "2025-01-01T00:00:00.000Z", "to": "2025-12-31T23:59:59.000Z" },
+          "expiresAt": "2026-12-31T00:00:00.000Z"
+        }
+      ],
+      "updatedAt": "2026-10-28T00:25:26.788Z"
+    }
+    ```
+
+    The `artefacts` are what the patient actually approved, which can be less than you asked for. Use them for the fetch.
+
+4. **Prepare a record fetch** under the artefact. It must fit inside what the patient approved.
+
+    ```sh
+    curl -s "${H[@]}" -X POST $U/health-info-requests/prepare -d '{
+      "requestId": "c9d56455-269d-4327-a04b-9819a92f6238",
+      "artefactId": "mock-cr-1-artefact-1",
+      "hiTypes": ["Prescription"],
+      "dateRange": { "from": "2025-01-01T00:00:00.000Z", "to": "2025-12-31T23:59:59.000Z" }
+    }'
+    ```
+
+    ```json
+    {
+      "approvalId": "e6da6b63-7132-4ab8-9f39-8f3ab358bad0",
+      "environment": "mock",
+      "expiresAt": "2026-10-28T00:35:28.596Z",
+      "summary": [
+        "Fetch health records from HIP-DEMO-01 under consent mock-cr-1-artefact-1",
+        "Records: Prescription",
+        "Period: 2025-01-01 to 2025-12-31",
+        "Record content will be returned to the requester"
+      ]
+    }
+    ```
+
+5. **After approval, send the fetch.**
+
+    ```sh
+    curl -s "${H[@]}" -X POST $U/health-info-requests -d '{ "approvalId": "e6da6b63-7132-4ab8-9f39-8f3ab358bad0", "request": { ...the request from step 4... } }'
+    ```
+
+    ```json
+    { "transactionId": "cb6d5499-0a64-4e64-b524-8b1bea18b459", "state": "requested", "contentExposed": true, "records": [] }
+    ```
+
+6. **Poll for the records.** The state becomes `received`, `failed` or `discarded`. Consent is checked again on every read.
+
+    ```sh
+    curl -s "${H[@]}" $U/health-info-requests/cb6d5499-0a64-4e64-b524-8b1bea18b459
+    ```
+
+    ```json
+    {
+      "transactionId": "cb6d5499-0a64-4e64-b524-8b1bea18b459",
+      "state": "received",
+      "contentExposed": true,
+      "records": [
+        {
+          "hiType": "Prescription",
+          "careContextReference": "CC-139809",
+          "sizeBytes": 1691,
+          "bundle": { "resourceType": "Bundle", "type": "document", "entry": ["…Composition, Patient, Practitioner, MedicationRequest"] }
+        }
+      ]
+    }
+    ```
+
+</Steps>
+
+## When things go wrong
+
+Errors return `{ "error": { "code": "...", "detail": "..." } }`. Real examples:
+
+```sh
+# Sending the same approval twice
+{"error":{"code":"approval_already_used"}}                     HTTP 409
+
+# Leaving out required fields
+{"error":{"code":"invalid_request","detail":"hiuId: Invalid input: expected string, received undefined; ..."}}   HTTP 400
+```
+
+| Status | What to do |
+| --- | --- |
+| `400` | Fix the field named in `detail` and prepare again |
+| `401` | Check the token; it may be from an earlier run |
+| `403` | The user cannot act for that facility, or the patient did not agree to this; `code` says which |
+| `404` | The ID is wrong, or belongs to another user |
+| `409` | Prepare again: the approval was used, expired (10 minutes) or was for a different request |
+
+<Aside type="caution" title="Before production">
+The practice server authenticates one local user with one token. In production, `authenticate` must map your real login (single sign-on or session) to a user and the facilities they may act for, and your app must authenticate the person who approves. See [Security architecture](/concepts/security-architecture/).
+</Aside>
+
+A Python version of this walkthrough, with an approval prompt, is in `examples/python/consent_and_fetch.py`.

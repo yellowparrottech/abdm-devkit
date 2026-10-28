@@ -1,0 +1,68 @@
+{
+  "name": "@yellowparrottech/abdm-mcp-server",
+  "version": "0.0.0",
+  "description": "MCP server for the YellowParrot ABDM DevKit; runs the mock environment with synthetic data",
+  "keywords": [
+    "abdm",
+    "abha",
+    "ayushman-bharat",
+    "health",
+    "fhir",
+    "consent",
+    "india",
+    "mcp",
+    "model-context-protocol",
+    "mcp-server"
+  ],
+  "homepage": "https://abdm.yellowparrottech.com",
+  "bugs": {
+    "url": "https://github.com/yellowparrottech/abdm-devkit/issues"
+  },
+  "license": "Apache-2.0",
+  "author": "YellowParrot Technologies Private Limited",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yellowparrottech/abdm-devkit.git",
+    "directory": "apps/mcp-server"
+  },
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "bin": {
+    "abdm-mcp-server": "./dist/main.js"
+  },
+  "files": [
+    "dist",
+    "!dist/.tsbuildinfo",
+    "src",
+    "!src/**/*.test.ts",
+    "README.md",
+    "LICENSE",
+    "NOTICE"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "scripts": {
+    "build": "tsc -b"
+  },
+  "dependencies": {
+    "@yellowparrottech/abdm-core": "workspace:*",
+    "@yellowparrottech/abdm-fixtures": "workspace:*",
+    "@yellowparrottech/abdm-mcp-adapter": "workspace:*",
+    "@yellowparrottech/abdm-mock-gateway": "workspace:*",
+    "@yellowparrottech/abdm-workflows": "workspace:*",
+    "@modelcontextprotocol/server": "2.3.1"
+  },
+  "devDependencies": {
+    "@modelcontextprotocol/client": "2.3.1"
+  }
+}

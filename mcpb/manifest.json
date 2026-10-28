@@ -1,0 +1,42 @@
+{
+  "manifest_version": "0.3",
+  "name": "yellowparrot-abdm-devkit",
+  "display_name": "YellowParrot ABDM DevKit (mock)",
+  "version": "0.0.0",
+  "description": "Unofficial ABDM developer toolkit, mock environment only: request consent, fetch encrypted records and check FHIR documents with synthetic data. Not affiliated with NHA.",
+  "long_description": "Runs a simulated ABDM gateway and HIP inside the extension. Every consent request and record fetch asks you to confirm it first. All data is synthetic; nothing is sent to ABDM or any other service. Sandbox and production use are not supported in this build.",
+  "author": {
+    "name": "YellowParrot Technologies",
+    "url": "https://yellowparrottech.com"
+  },
+  "homepage": "https://github.com/yellowparrottech/abdm-devkit",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yellowparrottech/abdm-devkit.git"
+  },
+  "license": "Apache-2.0",
+  "keywords": ["abdm", "abha", "fhir", "health", "mock"],
+  "server": {
+    "type": "node",
+    "entry_point": "server/index.js",
+    "mcp_config": {
+      "command": "node",
+      "args": ["${__dirname}/server/index.js"],
+      "env": { "ABDM_ENV": "mock" }
+    }
+  },
+  "tools": [
+    { "name": "abdm_demo_scenarios", "description": "List how the simulated patient can respond" },
+    { "name": "abdm_consent_request", "description": "Request patient consent after you confirm it" },
+    { "name": "abdm_consent_status", "description": "Check a consent request" },
+    { "name": "abdm_health_info_request", "description": "Fetch records under a granted consent after you confirm it" },
+    { "name": "abdm_health_info_result", "description": "Read records received for a fetch" },
+    { "name": "abdm_workflow_status", "description": "List your consent requests and fetches" },
+    { "name": "abdm_fhir_generate", "description": "Build an ABDM FHIR document bundle" },
+    { "name": "abdm_fhir_validate", "description": "Check an ABDM FHIR document bundle" }
+  ],
+  "compatibility": {
+    "platforms": ["darwin", "win32", "linux"],
+    "runtimes": { "node": ">=22.0.0" }
+  }
+}

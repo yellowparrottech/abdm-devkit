@@ -1,0 +1,10 @@
+# Deploys the docs site as static assets on Cloudflare Workers, the same way as yellowparrottech.com.
+#   pnpm build && wrangler deploy
+name = "abdm-devkit-docs"
+compatibility_date = "2026-10-01"
+workers_dev = false
+routes = [{ pattern = "abdm.yellowparrottech.com", custom_domain = true }]
+
+[assets]
+directory = "./dist"
+not_found_handling = "404-page"

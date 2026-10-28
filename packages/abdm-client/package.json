@@ -1,0 +1,56 @@
+{
+  "name": "@yellowparrottech/abdm-client",
+  "version": "0.0.0",
+  "description": "Typed ABDM V2/V3 HTTP client with per-flow version selection",
+  "keywords": [
+    "abdm",
+    "abha",
+    "ayushman-bharat",
+    "health",
+    "fhir",
+    "consent",
+    "india"
+  ],
+  "homepage": "https://abdm.yellowparrottech.com",
+  "bugs": {
+    "url": "https://github.com/yellowparrottech/abdm-devkit/issues"
+  },
+  "license": "Apache-2.0",
+  "author": "YellowParrot Technologies Private Limited",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yellowparrottech/abdm-devkit.git",
+    "directory": "packages/abdm-client"
+  },
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "sideEffects": false,
+  "files": [
+    "dist",
+    "!dist/.tsbuildinfo",
+    "src",
+    "!src/**/*.test.ts",
+    "README.md",
+    "LICENSE",
+    "NOTICE"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "scripts": {
+    "build": "tsc -b"
+  },
+  "dependencies": {
+    "@yellowparrottech/abdm-core": "workspace:*",
+    "@yellowparrottech/abdm-consent-engine": "workspace:*"
+  }
+}

@@ -1,0 +1,351 @@
+---
+/**
+ * Interactive walkthrough: runs the real DevKit (practice ABDM, workflows and REST API) in the
+ * reader's browser and shows every request and reply on both sides.
+ */
+const steps = [
+  { id: "prepare", title: "Prepare a consent request", button: "Send it to the DevKit", who: "Your app" },
+  { id: "approve", title: "Your user approves, the DevKit sends it to ABDM", button: "Approve and send", who: "Your app" },
+  { id: "patient", title: "The patient decides", button: "Let the patient decide", who: "Patient" },
+  { id: "prepare-fetch", title: "Prepare a record fetch", button: "Send it to the DevKit", who: "Your app" },
+  { id: "approve-fetch", title: "Your user approves the fetch", button: "Approve and send", who: "Your app" },
+  { id: "hospital", title: "The hospital sends the records", button: "Let the hospital send them", who: "Hospital" },
+];
+---
+<div class="wt not-content" data-walkthrough>
+  <fieldset class="wt-setup">
+    <legend>In this practice run, the patient will:</legend>
+    <label><input type="radio" name="wt-scenario" value="approve" checked /> approve everything</label>
+    <label><input type="radio" name="wt-scenario" value="approve_narrower" /> approve prescriptions only</label>
+    <label><input type="radio" name="wt-scenario" value="deny" /> refuse</label>
+    <button type="button" class="wt-reset" data-reset>Start again</button>
+  </fieldset>
+
+  <div class="wt-bar">
+    <p class="wt-progress" aria-live="polite" data-live>Step 1 of 6: prepare a consent request.</p>
+    <button type="button" data-copy disabled>Copy transcript</button>
+  </div>
+
+  <ol class="wt-steps">
+    {steps.map((s, i) => (
+      <li class="wt-step" data-step={s.id} data-index={i}>
+        <div class="wt-step-head">
+          <span class="wt-num">{i + 1}</span>
+          <div>
+            <p class="wt-who">{s.who}</p>
+            <h3 class="wt-title">{s.title}</h3>
+          </div>
+          <button type="button" class="wt-run" data-run={s.id} disabled={i !== 0}>{s.button}</button>
+        </div>
+        <div class="wt-out" data-out={s.id}></div>
+      </li>
+    ))}
+  </ol>
+</div>
+
+<style is:global>
+  .wt { margin: 1.5rem 0; }
+  .wt-setup { border: 1px solid var(--sl-color-gray-5); border-radius: 0.75rem; padding: 0.75rem 1rem 1rem; display: flex; flex-wrap: wrap; gap: 0.5rem 1.25rem; align-items: center; }
+  .wt-setup legend { padding: 0 0.4rem; font-weight: 600; color: var(--sl-color-white); }
+  .wt-setup label { display: inline-flex; gap: 0.4rem; align-items: center; color: var(--sl-color-gray-2); }
+  .wt-reset { margin-inline-start: auto; }
+  .wt-bar { display: flex; flex-wrap: wrap; gap: 0.5rem 1rem; align-items: center; justify-content: space-between; margin-top: 0.75rem; }
+  .wt-progress { margin: 0; font-size: var(--sl-text-sm); color: var(--sl-color-gray-2); }
+  .wt button { font: inherit; font-size: var(--sl-text-sm); border-radius: 999px; padding: 0.4rem 0.95rem; cursor: pointer; border: 1px solid var(--sl-color-gray-4); background: transparent; color: var(--sl-color-white); }
+  .wt button.wt-run { background: var(--sl-color-accent); border-color: var(--sl-color-accent); color: var(--sl-color-black); font-weight: 600; }
+  .wt button:disabled { opacity: 0.4; cursor: not-allowed; }
+  .wt button:focus-visible { outline: 2px solid var(--sl-color-accent-high); outline-offset: 2px; }
+  .wt-steps { list-style: none; padding: 0; margin: 1rem 0 0; display: grid; gap: 0.75rem; }
+  .wt-step { border: 1px solid var(--sl-color-gray-5); border-radius: 0.75rem; padding: 0.9rem 1rem; }
+  .wt-step.wt-done { border-color: var(--sl-color-accent); }
+  .wt-step-head { display: flex; gap: 0.85rem; align-items: center; }
+  .wt-step-head > div { flex: 1; min-width: 0; }
+  .wt-num { flex: none; width: 1.8rem; height: 1.8rem; border-radius: 50%; display: grid; place-items: center; background: var(--sl-color-gray-6); border: 1px solid var(--sl-color-gray-4); font-weight: 700; color: var(--sl-color-white); }
+  .wt-done .wt-num { background: var(--sl-color-accent); border-color: var(--sl-color-accent); color: var(--sl-color-black); }
+  .wt-who { margin: 0; font-size: var(--sl-text-xs); text-transform: uppercase; letter-spacing: 0.05em; color: var(--sl-color-gray-3); }
+  .wt-title { margin: 0.1rem 0 0; font-size: var(--sl-text-base); color: var(--sl-color-white); }
+  .wt-out:empty { display: none; }
+  .wt-out { margin-top: 0.85rem; display: grid; gap: 0.6rem; }
+  .wt-msg { border-radius: 0.5rem; border: 1px solid var(--sl-color-gray-5); overflow: hidden; }
+  .wt-msg-head { display: flex; flex-wrap: wrap; gap: 0.25rem 0.75rem; justify-content: space-between; padding: 0.45rem 0.75rem; background: var(--sl-color-gray-6); font-size: var(--sl-text-sm); }
+  .wt-msg-head strong { color: var(--sl-color-white); }
+  .wt-msg-head span { color: var(--sl-color-gray-3); }
+  .wt-msg.wt-abdm { border-style: dashed; }
+  .wt-msg pre { margin: 0; padding: 0.6rem 0.75rem; font-size: var(--sl-text-xs); line-height: 1.55; max-height: 22rem; overflow: auto; background: transparent; border: 0; }
+  .wt-reply { padding: 0.45rem 0.75rem; border-top: 1px solid var(--sl-color-gray-5); font-size: var(--sl-text-sm); color: var(--sl-color-gray-2); }
+  .wt-note { margin: 0; font-size: var(--sl-text-sm); color: var(--sl-color-gray-2); }
+  .wt-status-ok { color: var(--sl-color-green-high, var(--sl-color-white)); }
+  .wt-status-err { color: var(--sl-color-red-high, var(--sl-color-white)); }
+</style>
+
+<script>
+  import { ManualClock } from "@yellowparrottech/abdm-core";
+  import { DEMO_HIP_ID, DEMO_HIU_ID } from "@yellowparrottech/abdm-fixtures";
+  import { MockGateway, type ConsentScenario } from "@yellowparrottech/abdm-mock-gateway";
+  import { createRestApp } from "@yellowparrottech/abdm-rest-adapter";
+  import { ConsentWorkflows, HealthInfoWorkflows, InMemoryAuditLog, InMemoryConsentStore } from "@yellowparrottech/abdm-workflows";
+
+  const root = document.querySelector<HTMLElement>("[data-walkthrough]")!;
+  const TOKEN = "practice-token";
+  const ORDER = ["prepare", "approve", "patient", "prepare-fetch", "approve-fetch", "hospital"];
+
+  type Json = unknown;
+  const TITLES = ["prepare a consent request", "approve and send it", "let the patient decide", "prepare a record fetch", "approve and send the fetch", "let the hospital send the records"];
+  let current = "prepare";
+  /** Everything shown, in order, for the "Copy transcript" button. */
+  let transcript: string[] = [];
+  let state: Record<string, any> = {};
+  let runtime: ReturnType<typeof createRuntime>;
+
+  /** Long base64 values are cut so the shape stays readable. */
+  const shorten = (value: Json): Json =>
+    JSON.parse(JSON.stringify(value, (_, v) => (typeof v === "string" && v.length > 72 ? `${v.slice(0, 48)}… (${v.length} characters)` : v)));
+
+  function out(step = current): HTMLElement {
+    return root.querySelector<HTMLElement>(`[data-out="${step}"]`)!;
+  }
+
+  function message(opts: { side: "app" | "abdm"; title: string; meta?: string; body?: Json; reply?: string; statusClass?: string }) {
+    transcript.push(
+      [`${opts.title}${opts.meta ? `  (${opts.meta})` : ""}`, opts.body === undefined ? "" : JSON.stringify(shorten(opts.body), null, 2), opts.reply ?? ""]
+        .filter(Boolean)
+        .join("\n"),
+    );
+    const box = document.createElement("div");
+    box.className = `wt-msg${opts.side === "abdm" ? " wt-abdm" : ""}`;
+    const head = document.createElement("div");
+    head.className = "wt-msg-head";
+    const title = document.createElement("strong");
+    title.textContent = opts.title;
+    head.append(title);
+    if (opts.meta) {
+      const meta = document.createElement("span");
+      meta.textContent = opts.meta;
+      if (opts.statusClass) meta.className = opts.statusClass;
+      head.append(meta);
+    }
+    box.append(head);
+    if (opts.body !== undefined) {
+      const pre = document.createElement("pre");
+      pre.textContent = JSON.stringify(shorten(opts.body), null, 2);
+      box.append(pre);
+    }
+    if (opts.reply) {
+      const reply = document.createElement("div");
+      reply.className = "wt-reply";
+      reply.textContent = opts.reply;
+      box.append(reply);
+    }
+    out().append(box);
+  }
+
+  function announce(text: string) {
+    root.querySelector<HTMLElement>("[data-live]")!.textContent = text;
+  }
+
+  function note(text: string) {
+    transcript.push(`Note: ${text}`);
+    const p = document.createElement("p");
+    p.className = "wt-note";
+    p.textContent = text;
+    out().append(p);
+  }
+
+  function createRuntime(scenario: ConsentScenario) {
+    const clock = new ManualClock(new Date());
+    const gateway = new MockGateway({ clock, hipId: DEMO_HIP_ID, ackDelayMs: 500, decisionDelayMs: 4_000, dataPushDelayMs: 3_000 });
+    const audit = new InMemoryAuditLog();
+    const consents = new ConsentWorkflows({
+      environment: "mock",
+      clock,
+      audit,
+      store: new InMemoryConsentStore(),
+      gateway: {
+        submitConsentRequest: (requestId, request) => {
+          message({ side: "abdm", title: "DevKit → ABDM: consent request", meta: "sent by the DevKit", body: { requestId, ...request } });
+          gateway.requestConsent(requestId, request, scenario);
+        },
+      },
+    });
+    const healthInfo = new HealthInfoWorkflows({
+      environment: "mock",
+      clock,
+      audit,
+      consents,
+      exposeContent: true,
+      gateway: {
+        requestHealthInfo: (transactionId, request) => {
+          message({
+            side: "abdm",
+            title: "DevKit → ABDM: request the records",
+            meta: "includes a one-time public key and random number",
+            body: { transactionId, ...request },
+          });
+          gateway.requestHealthInfo(transactionId, request);
+        },
+      },
+    });
+    const titles: Record<string, string> = {
+      acknowledged: "ABDM → DevKit: request received",
+      granted: "ABDM → DevKit: the patient approved",
+      denied: "ABDM → DevKit: the patient refused",
+      expired: "ABDM → DevKit: the request expired",
+    };
+    gateway.onCallback((callback) => {
+      message({
+        side: "abdm",
+        title: titles[callback.event.type] ?? `ABDM → DevKit: ${callback.event.type}`,
+        meta: "a message ABDM sends to you",
+        body: callback,
+        reply: "You reply: 202 Accepted, straight away. The callback bridge does this for you.",
+      });
+      consents.handleConsentCallback(callback);
+    });
+    gateway.onDataPush(async (push) => {
+      message({
+        side: "abdm",
+        title: "Hospital → DevKit: encrypted records",
+        meta: "sent straight from the hospital",
+        body: push,
+        reply: "You reply: 202 Accepted. The DevKit then decrypts the records with its private key, which never left your side.",
+      });
+      await healthInfo.handleDataPush(push);
+    });
+    const app = createRestApp({
+      consents,
+      healthInfo,
+      authenticate: (req) => (req.headers.get("authorization") === `Bearer ${TOKEN}` ? { id: "you", hiuIds: [DEMO_HIU_ID] } : undefined),
+    });
+    return { clock, gateway, app };
+  }
+
+  /** Calls the real REST API in the browser and shows both sides of the exchange. */
+  async function call(method: string, path: string, body?: Json) {
+    message({
+      side: "app",
+      title: `You send: ${method} /v1${path}`,
+      meta: `Authorization: Bearer ${TOKEN}`,
+      ...(body === undefined ? {} : { body }),
+    });
+    const res = await runtime.app.request(`/v1${path}`, {
+      method,
+      headers: { authorization: `Bearer ${TOKEN}`, "content-type": "application/json" },
+      ...(body === undefined ? {} : { body: JSON.stringify(body) }),
+    });
+    const json = await res.json();
+    const ok = res.status < 400;
+    message({ side: "app", title: "You get back", meta: `${res.status} ${STATUS_TEXT[res.status] ?? ""}`, statusClass: ok ? "wt-status-ok" : "wt-status-err", body: json });
+    return { ok, json };
+  }
+
+  const STATUS_TEXT: Record<number, string> = { 200: "OK", 201: "Created", 400: "Bad Request", 401: "Unauthorized", 403: "Forbidden", 404: "Not Found", 409: "Conflict" };
+  const day = 86_400_000;
+  const actions: Record<string, () => Promise<boolean>> = {
+    async prepare() {
+      state.request = {
+        patientAbhaAddress: "asha.rao1@sbx",
+        hiuId: DEMO_HIU_ID,
+        requesterName: "Dr Practice",
+        purpose: "CAREMGT",
+        hiTypes: ["Prescription", "DiagnosticReport"],
+        dateRange: { from: "2025-01-01T00:00:00.000Z", to: "2025-12-31T23:59:59.000Z" },
+        expiresAt: new Date(runtime.clock.now().getTime() + 30 * day).toISOString(),
+      };
+      const { ok, json } = await call("POST", "/consent-requests/prepare", state.request);
+      if (ok) {
+        state.approvalId = json.approvalId;
+        note("Nothing has gone to ABDM yet. Show the summary to your user; if they agree, send the approval ID with the same request.");
+      }
+      return ok;
+    },
+    async approve() {
+      const { ok, json } = await call("POST", "/consent-requests", { approvalId: state.approvalId, request: state.request });
+      if (ok) state.requestId = json.requestId;
+      return ok;
+    },
+    async patient() {
+      note("Simulating a few seconds while ABDM acknowledges and the patient answers in their ABHA app…");
+      await runtime.gateway.runUntilIdle();
+      const { ok, json } = await call("GET", `/consent-requests/${state.requestId}`);
+      state.artefact = json.artefacts?.[0];
+      if (ok && json.state !== "granted") note("The patient did not approve, so the next steps will be refused. Carry on to see how.");
+      else if (ok && state.artefact && state.artefact.hiTypes.length < state.request.hiTypes.length)
+        note(`The patient approved less than you asked for: only ${state.artefact.hiTypes.join(", ")}. The DevKit will refuse anything else.`);
+      return ok;
+    },
+    async "prepare-fetch"() {
+      state.fetch = { requestId: state.requestId, artefactId: state.artefact?.id ?? "none", hiTypes: ["Prescription"], dateRange: state.request.dateRange };
+      const { ok, json } = await call("POST", "/health-info-requests/prepare", state.fetch);
+      if (ok) state.fetchApprovalId = json.approvalId;
+      else note("The DevKit refused before anything reached ABDM. Choose another patient response and start again.");
+      return ok;
+    },
+    async "approve-fetch"() {
+      const { ok, json } = await call("POST", "/health-info-requests", { approvalId: state.fetchApprovalId, request: state.fetch });
+      if (ok) state.transactionId = json.transactionId;
+      return ok;
+    },
+    async hospital() {
+      note("Simulating a few seconds while the hospital encrypts and sends the records…");
+      await runtime.gateway.runUntilIdle();
+      const { ok } = await call("GET", `/health-info-requests/${state.transactionId}`);
+      if (ok) note("That record is a made-up FHIR document. In a real run it is the patient's actual record, and it is deleted once the consent ends.");
+      return ok;
+    },
+  };
+
+  function enable(step: string | undefined) {
+    root.querySelectorAll<HTMLButtonElement>("[data-run]").forEach((b) => (b.disabled = b.dataset.run !== step));
+  }
+
+  function reset() {
+    const scenario = (root.querySelector<HTMLInputElement>('input[name="wt-scenario"]:checked')?.value ?? "approve") as ConsentScenario;
+    runtime = createRuntime(scenario);
+    state = {};
+    transcript = [];
+    root.querySelector<HTMLButtonElement>("[data-copy]")!.disabled = true;
+    announce("Step 1 of 6: prepare a consent request.");
+    root.querySelectorAll<HTMLElement>("[data-out]").forEach((el) => (el.innerHTML = ""));
+    root.querySelectorAll(".wt-step").forEach((el) => el.classList.remove("wt-done"));
+    enable("prepare");
+  }
+
+  root.querySelectorAll<HTMLButtonElement>("[data-run]").forEach((button) =>
+    button.addEventListener("click", async () => {
+      const step = button.dataset.run!;
+      current = step;
+      button.disabled = true;
+      const ok = await actions[step]!();
+      root.querySelector(`[data-step="${step}"]`)!.classList.add("wt-done");
+      const index = ORDER.indexOf(step);
+      const next = ok ? ORDER[index + 1] : undefined;
+      enable(next);
+      root.querySelector<HTMLButtonElement>("[data-copy]")!.disabled = false;
+      announce(
+        !ok
+          ? `Step ${index + 1} was refused, as the explanation below says. Choose another patient response or start again.`
+          : next
+            ? `Step ${index + 1} of 6 done. Next: ${TITLES[index + 1]}.`
+            : "All 6 steps done. You can copy the transcript or start again.",
+      );
+    }),
+  );
+  root.querySelector("[data-reset]")!.addEventListener("click", reset);
+  root.querySelector("[data-copy]")!.addEventListener("click", async () => {
+    const text = `YellowParrot ABDM DevKit: practice run (made-up data)\n\n${transcript.join("\n\n")}\n`;
+    try {
+      await navigator.clipboard.writeText(text);
+      announce("Transcript copied to the clipboard.");
+    } catch {
+      // Clipboard access can be blocked; offer the transcript as a file instead.
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(new Blob([text], { type: "text/plain" }));
+      link.download = "abdm-devkit-practice-run.txt";
+      link.click();
+      URL.revokeObjectURL(link.href);
+      announce("Transcript downloaded as a text file.");
+    }
+  });
+  root.querySelectorAll('input[name="wt-scenario"]').forEach((input) => input.addEventListener("change", reset));
+  reset();
+</script>

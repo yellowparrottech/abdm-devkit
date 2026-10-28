@@ -1,0 +1,28 @@
+{
+  "name": "@yellowparrottech/abdm-callback-bridge",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Self-hosted receiver for ABDM gateway callbacks: verifies, de-duplicates and stores them for the core to collect",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yellowparrottech/abdm-devkit.git",
+    "directory": "apps/callback-bridge"
+  },
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -b"
+  },
+  "dependencies": {
+    "hono": "4.13.13"
+  }
+}

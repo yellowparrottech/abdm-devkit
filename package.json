@@ -1,0 +1,33 @@
+{
+  "name": "abdm-devkit",
+  "private": true,
+  "description": "YellowParrot ABDM DevKit: build, simulate and validate ABDM integrations without live credentials",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yellowparrottech/abdm-devkit.git"
+  },
+  "type": "module",
+  "packageManager": "pnpm@12.12.1",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "tsc -b",
+    "typecheck": "tsc -b && tsc -p tsconfig.test.json",
+    "test": "vitest run",
+    "clean": "tsc -b --clean",
+    "bundle:mcpb": "pnpm build && node scripts/bundle-mcpb.mjs",
+    "changeset": "changeset",
+    "release": "pnpm build && changeset publish"
+  },
+  "devDependencies": {
+    "@anthropic-ai/mcpb": "2.1.2",
+    "@changesets/cli": "3.0.3",
+    "@modelcontextprotocol/client": "2.3.1",
+    "@types/node": "24.19.2",
+    "esbuild": "0.28.2",
+    "typescript": "7.0.2",
+    "vitest": "5.0.4"
+  }
+}

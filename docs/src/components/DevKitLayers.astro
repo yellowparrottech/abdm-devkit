@@ -1,0 +1,53 @@
+---
+import Arrow from "./Arrow.astro";
+const a = "url(#layers-arrow)";
+---
+<figure class="diagram">
+  <svg viewBox="0 0 760 470" role="img" aria-label="Where the DevKit fits: AI assistants, apps in any language and TypeScript code all go through the same DevKit workflows, which use shared building blocks to talk to mock ABDM, the ABDM sandbox or a certified service">
+    <Arrow id="layers-arrow" />
+    <g class="line">
+      <path d="M136 90 V128" marker-end={a} /><path d="M382 90 V128" marker-end={a} /><path d="M628 90 V128" marker-end={a} />
+      <path d="M103 220 V258" marker-end={a} /><path d="M288 220 V258" marker-end={a} /><path d="M473 220 V258" marker-end={a} /><path d="M658 220 V258" marker-end={a} />
+      <path d="M382 340 V360 M136 360 H628" />
+      <path d="M136 360 V378" marker-end={a} /><path d="M382 360 V378" marker-end={a} /><path d="M628 360 V378" marker-end={a} />
+    </g>
+    <rect class="box" x="20" y="20" width="232" height="70" rx="10" />
+    <text class="title" x="36" y="48">AI assistant</text>
+    <text class="sub" x="36" y="70">Claude, other MCP clients</text>
+    <rect class="box" x="266" y="20" width="232" height="70" rx="10" />
+    <text class="title" x="282" y="48">Your app, any language</text>
+    <text class="sub" x="282" y="70">over the REST API</text>
+    <rect class="box" x="512" y="20" width="232" height="70" rx="10" />
+    <text class="title" x="528" y="48">Your TypeScript code</text>
+    <text class="sub" x="528" y="70">imports the packages</text>
+
+    <rect class="accent" x="20" y="130" width="724" height="90" rx="10" />
+    <text class="title" x="36" y="162">DevKit workflows</text>
+    <text class="sub" x="36" y="186">Each request needs an approval tied to one user and that exact request · consent checked</text>
+    <text class="sub" x="36" y="204">at every step · each user sees only their own work · actions logged without patient details</text>
+
+    <rect class="box" x="20" y="260" width="167" height="80" rx="10" />
+    <text class="title" x="34" y="290">Consent rules</text>
+    <text class="sub" x="34" y="314">who may see what</text>
+    <rect class="box" x="205" y="260" width="167" height="80" rx="10" />
+    <text class="title" x="219" y="290">Encryption</text>
+    <text class="sub" x="219" y="314">ABDM's scheme</text>
+    <rect class="box" x="390" y="260" width="167" height="80" rx="10" />
+    <text class="title" x="404" y="290">Health records</text>
+    <text class="sub" x="404" y="314">build and check</text>
+    <rect class="box" x="575" y="260" width="169" height="80" rx="10" />
+    <text class="title" x="589" y="290">ABDM client</text>
+    <text class="sub" x="589" y="314">V2 and V3 APIs</text>
+
+    <rect class="accent" x="20" y="380" width="232" height="70" rx="10" />
+    <text class="title" x="36" y="408">Mock ABDM</text>
+    <text class="sub" x="36" y="430">built in, synthetic data</text>
+    <rect class="box" x="266" y="380" width="232" height="70" rx="10" />
+    <text class="title" x="282" y="408">ABDM sandbox</text>
+    <text class="sub" x="282" y="430">your own test credentials</text>
+    <rect class="box" x="512" y="380" width="232" height="70" rx="10" />
+    <text class="title" x="528" y="408">Certified service</text>
+    <text class="sub" x="528" y="430">for production use</text>
+  </svg>
+  <figcaption>Three ways in, one set of rules, three places to connect. Mock ABDM (highlighted) is the default and needs nothing.</figcaption>
+</figure>

@@ -1,0 +1,43 @@
+---
+import Arrow from "./Arrow.astro";
+const a = "url(#enc-arrow)";
+---
+<figure class="diagram">
+  <svg viewBox="0 0 760 310" role="img" aria-label="How a record is encrypted: both sides' keys make a shared secret, both sides' random numbers make the salt and IV, these make the record key, and the record key encrypts the record">
+    <Arrow id="enc-arrow" />
+    <g class="line">
+      <path d="M220 70 H288" marker-end={a} />
+      <path d="M220 210 H288" marker-end={a} />
+      <path d="M220 90 L288 192" marker-end={a} />
+      <path d="M220 190 L288 88" marker-end={a} />
+      <path d="M490 70 L558 128" marker-end={a} />
+      <path d="M490 210 L558 152" marker-end={a} />
+      <path d="M650 180 V218" marker-end={a} />
+    </g>
+    <rect class="box" x="20" y="30" width="200" height="80" rx="10" />
+    <text class="title" x="36" y="60">DevKit (receiver)</text>
+    <text class="sub" x="36" y="84">a new key pair and</text>
+    <text class="sub" x="36" y="100">a random number</text>
+    <rect class="box" x="20" y="170" width="200" height="80" rx="10" />
+    <text class="title" x="36" y="200">Hospital (sender)</text>
+    <text class="sub" x="36" y="224">its key pair and</text>
+    <text class="sub" x="36" y="240">a random number</text>
+
+    <rect class="box" x="290" y="30" width="200" height="80" rx="10" />
+    <text class="title" x="306" y="60">Shared secret</text>
+    <text class="sub" x="306" y="84">from both key pairs</text>
+    <rect class="box" x="290" y="170" width="200" height="80" rx="10" />
+    <text class="title" x="306" y="200">Salt and IV</text>
+    <text class="sub" x="306" y="224">from both random</text>
+    <text class="sub" x="306" y="240">numbers</text>
+
+    <rect class="box" x="560" y="100" width="180" height="80" rx="10" />
+    <text class="title" x="576" y="130">Record key</text>
+    <text class="sub" x="576" y="154">made from both</text>
+    <rect class="accent" x="560" y="220" width="180" height="76" rx="10" />
+    <text class="title" x="576" y="248">Encrypted record</text>
+    <text class="sub" x="576" y="268">only the DevKit</text>
+    <text class="sub" x="576" y="284">can open it</text>
+  </svg>
+  <figcaption>The DevKit makes a new key pair for every transfer and its private key never leaves the DevKit.</figcaption>
+</figure>

@@ -1,0 +1,36 @@
+---
+import Arrow from "./Arrow.astro";
+const a = "url(#bridge-arrow)";
+---
+<figure class="diagram">
+  <svg viewBox="0 0 760 250" role="img" aria-label="The callback bridge receives a result from ABDM, checks ABDM's signature, refuses repeats, stores it and replies 202; the DevKit collects stored results from the bridge's inbox">
+    <Arrow id="bridge-arrow" />
+    <g class="line">
+      <path d="M185 100 H223" marker-end={a} />
+      <path d="M225 170 H189" class="dashed" marker-end={a} />
+      <path d="M545 125 H588" marker-end={a} />
+    </g>
+    <text class="label" x="207" y="192" text-anchor="middle">202</text>
+
+    <rect class="box" x="20" y="60" width="165" height="130" rx="10" />
+    <text class="title" x="36" y="92">ABDM</text>
+    <text class="sub" x="36" y="116">sends consent and</text>
+    <text class="sub" x="36" y="134">record results</text>
+
+    <rect class="accent" x="225" y="20" width="320" height="210" rx="10" />
+    <text class="title" x="243" y="50">Callback bridge</text>
+    <text class="sub" x="243" y="72">on your own host or cloud</text>
+    <rect class="box" x="243" y="88" width="284" height="36" rx="8" />
+    <text class="sub" x="257" y="111">1 Check it really came from ABDM</text>
+    <rect class="box" x="243" y="132" width="284" height="36" rx="8" />
+    <text class="sub" x="257" y="155">2 Ignore repeats and old messages</text>
+    <rect class="box" x="243" y="176" width="284" height="36" rx="8" />
+    <text class="sub" x="257" y="199">3 Store it safely, then reply 202</text>
+
+    <rect class="box" x="590" y="60" width="155" height="130" rx="10" />
+    <text class="title" x="606" y="92">DevKit</text>
+    <text class="sub" x="606" y="116">collects from the</text>
+    <text class="sub" x="606" y="134">bridge's inbox</text>
+  </svg>
+  <figcaption>The bridge stores each result it receives before answering, so nothing it accepted is lost.</figcaption>
+</figure>

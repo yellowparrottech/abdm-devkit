@@ -1,0 +1,70 @@
+---
+title: Security architecture
+description: Trust boundaries, how a user's identity reaches each approval, and exactly what is stored where and for how long.
+sidebar:
+  order: 3.5
+---
+
+import { Aside } from "@astrojs/starlight/components";
+import TrustBoundaries from "../../../components/TrustBoundaries.astro";
+
+This page is for engineers deciding whether, and how, to run the DevKit with real health data. It describes the current build: tested against the practice ABDM, not yet against ABDM's test system, and not yet reviewed by an outside security firm.
+
+<TrustBoundaries />
+
+## Who is calling: identity and approvals
+
+The DevKit does not log people in. **Your application does**, and tells the DevKit who is calling. Everything else is enforced inside the DevKit, whichever way it is called.
+
+1. **Your app authenticates the person** (your single sign-on, session, or other login).
+2. **Your app maps that login to a DevKit user**: an ID and the facilities (HIU IDs) they may act for.
+   - **REST:** you provide an `authenticate(request)` function. It turns each HTTP request (for example its bearer token or session) into a user, or rejects it with `401`.
+   - **MCP:** the user is fixed when the MCP server starts, set by whoever runs it, never by the AI model. One server process serves one user.
+3. **Every approval belongs to that user.** An approval is issued to one user for one exact request, works once and expires after 10 minutes. A different user, a changed request, a reused or expired approval: all refused.
+4. **Your app must show the approval to the person and only send it if they agree.** The DevKit cannot tell whether a person or a script approved. In AI assistants, the MCP client's confirmation prompt is that step.
+
+<Aside type="caution" title="The command-line mock is single-user">
+`abdm-devkit mock` uses one random token for one local user, on `127.0.0.1` only. It is for trying the DevKit, not a model for production authentication.
+</Aside>
+
+## What is stored where, and for how long
+
+| Data | Where | How long | Protection |
+| --- | --- | --- | --- |
+| Consent requests and what the patient approved (includes the patient's ABHA address) | Consent store you provide; in memory by default | Your retention policy | Your database's controls; use encryption at rest |
+| Approvals | DevKit memory | Until used, or 10 minutes | Bound to one user and one request |
+| Transfer key pairs (private keys) | DevKit memory | Until that transfer's records are processed, or it fails or is discarded | Never sent anywhere or logged |
+| Decrypted health records | DevKit memory | Until consent lapses, then deleted | Shown only where the operator allows content; otherwise metadata only |
+| Audit log | Log you provide | Your retention policy | Never contains patient details or record content |
+| ABDM's replies, including record deliveries | Callback bridge database, on your host (Cloudflare D1 in the included setup) | Until the DevKit collects them | Encrypted with AES-256-GCM under your `STORAGE_KEY`; records are also encrypted by the hospital |
+| Request IDs of recent replies | Callback bridge database | 24 hours | IDs only, used to refuse replays |
+| ABDM's access tokens | Nowhere | Not stored | Checked, then discarded |
+| Your ABDM client secret, inbox token, storage key | Server environment and your host's secret store | Until you rotate them | Never in code, logs or AI context |
+
+Today, record transfers live only in the DevKit's memory, so restarting it loses transfers in progress. A durable, encrypted transfer store is planned before use with real data.
+
+## Where calls come from
+
+- Calls **to** ABDM come from your server, on a network ABDM accepts.
+- Calls **from** ABDM go to your callback bridge, which accepts only messages signed by ABDM's gateway, refuses repeats and stale messages, and stores them encrypted until collected.
+- Hospitals encrypt records for a key made for that one transfer, so the bridge and the network only ever carry ciphertext.
+
+## Threats and what stops them
+
+| Threat | What stops it |
+| --- | --- |
+| A user reads or sends another user's requests | Every lookup is scoped to the calling user; others' items look the same as missing ones |
+| An AI assistant is tricked by text inside a record | Record content is size-limited and marked as untrusted data; the DevKit never acts on record content, and every request still needs an approval |
+| An approval is reused or applied to a different request | Approvals are single-use, expire, and must match the exact request |
+| A forged or replayed message from "ABDM" | The bridge checks ABDM's signature, refuses repeated request IDs for 24 hours and messages outside a 5-minute window |
+| A second, forged record delivery | Only the first delivery per transfer is processed |
+| Records kept after consent ends | Records are deleted as soon as consent is withdrawn, expires or no longer covers them |
+| The bridge's database is exposed | Stored replies are encrypted under a key held only in your host's secret store |
+
+## Before using real patient data
+
+- Replace the in-memory stores with durable, encrypted ones, and set retention policies.
+- Authenticate every user properly, and give each their own identity in `authenticate`.
+- Complete your own ABDM certification, including NHA's security audit.
+- Get an external security review. The reviews so far were internal and AI-assisted (see [Security and privacy](/concepts/security/)).
+- Check your obligations as the data fiduciary under India's data-protection law.

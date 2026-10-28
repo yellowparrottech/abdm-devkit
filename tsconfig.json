@@ -1,0 +1,44 @@
+{
+  "files": [],
+  "references": [
+    {
+      "path": "./apps/callback-bridge"
+    },
+    {
+      "path": "./apps/cli"
+    },
+    {
+      "path": "./apps/mcp-server"
+    },
+    {
+      "path": "./packages/abdm-client"
+    },
+    {
+      "path": "./packages/consent-engine"
+    },
+    {
+      "path": "./packages/core"
+    },
+    {
+      "path": "./packages/crypto-adapter"
+    },
+    {
+      "path": "./packages/fhir"
+    },
+    {
+      "path": "./packages/fixtures"
+    },
+    {
+      "path": "./packages/mcp-adapter"
+    },
+    {
+      "path": "./packages/mock-gateway"
+    },
+    {
+      "path": "./packages/rest-adapter"
+    },
+    {
+      "path": "./packages/workflows"
+    }
+  ]
+}

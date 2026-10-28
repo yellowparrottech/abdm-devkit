@@ -1,0 +1,35 @@
+---
+title: Encryption
+description: How health records are protected on the way from the hospital to you, and how we know the DevKit gets it right.
+sidebar:
+  order: 4
+---
+
+import EncryptionFlow from "../../../components/EncryptionFlow.astro";
+
+Every record ABDM moves is encrypted by the sender so that only the intended receiver can read it. Nobody in between can read it, not even ABDM.
+
+<EncryptionFlow />
+
+1. For each transfer, the DevKit makes a **new key pair** and a **random number**, and sends the public half of the key and the random number with its request.
+2. The hospital does the same on its side.
+3. Each side combines its own private key with the other's public key. Both arrive at the same **shared secret**, without it ever being sent.
+4. The two random numbers are mixed to give two more values (a "salt" and an "IV") that make each transfer unique.
+5. Together these make the **record key**, which locks the record. Only the DevKit, holding its private key, can rebuild that key and open the record.
+
+## How we know it is right
+
+ABDM's reference tool comes with published test examples: fixed keys and numbers, and the exact encrypted output they must produce. The DevKit reproduces all seven examples exactly. It also rejects damaged data, the wrong key and the wrong random number, and malformed keys.
+
+<details>
+<summary>Technical details</summary>
+
+- Key agreement: ECDH on Curve25519 in short Weierstrass form (the form ABDM's Java reference uses).
+- The XOR of both 32-byte nonces: first 20 bytes are the HKDF-SHA256 salt, last 12 bytes the AES-256-GCM IV. HKDF uses an empty info value and a 32-byte output.
+- Public keys travel as X.509 with explicit curve parameters; raw 65-byte points are also accepted.
+- Built on the audited `@noble/curves` library and Web Crypto, with no hand-written curve maths. Runs in Node.js, Cloudflare Workers and browsers.
+- Reference vectors: fidelius-cli 1.2.0, as published with the MIT-licensed `abdm_fidelius` package.
+
+</details>
+
+Testing against real encrypted data from ABDM's test system is the remaining check.

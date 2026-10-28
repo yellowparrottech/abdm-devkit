@@ -1,0 +1,32 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "composite": true,
+    "rootDir": "src",
+    "outDir": "dist",
+    "tsBuildInfoFile": "dist/.tsbuildinfo"
+  },
+  "include": [
+    "src"
+  ],
+  "exclude": [
+    "src/**/*.test.ts"
+  ],
+  "references": [
+    {
+      "path": "../../packages/core"
+    },
+    {
+      "path": "../../packages/fixtures"
+    },
+    {
+      "path": "../../packages/mcp-adapter"
+    },
+    {
+      "path": "../../packages/mock-gateway"
+    },
+    {
+      "path": "../../packages/workflows"
+    }
+  ]
+}

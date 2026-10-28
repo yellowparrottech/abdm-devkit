@@ -1,0 +1,65 @@
+{
+  "name": "@yellowparrottech/abdm-rest-adapter",
+  "version": "0.0.0",
+  "description": "HTTP API over the ABDM workflows, for apps that do not use MCP",
+  "keywords": [
+    "abdm",
+    "abha",
+    "ayushman-bharat",
+    "health",
+    "fhir",
+    "consent",
+    "india",
+    "rest",
+    "hono"
+  ],
+  "homepage": "https://abdm.yellowparrottech.com",
+  "bugs": {
+    "url": "https://github.com/yellowparrottech/abdm-devkit/issues"
+  },
+  "license": "Apache-2.0",
+  "author": "YellowParrot Technologies Private Limited",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yellowparrottech/abdm-devkit.git",
+    "directory": "packages/rest-adapter"
+  },
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "sideEffects": false,
+  "files": [
+    "dist",
+    "!dist/.tsbuildinfo",
+    "src",
+    "!src/**/*.test.ts",
+    "README.md",
+    "LICENSE",
+    "NOTICE"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "scripts": {
+    "build": "tsc -b"
+  },
+  "dependencies": {
+    "hono": "4.13.13",
+    "zod": "4.6.7",
+    "@yellowparrottech/abdm-core": "workspace:*",
+    "@yellowparrottech/abdm-fhir": "workspace:*",
+    "@yellowparrottech/abdm-workflows": "workspace:*"
+  },
+  "devDependencies": {
+    "@yellowparrottech/abdm-fixtures": "workspace:*",
+    "@yellowparrottech/abdm-mock-gateway": "workspace:*"
+  }
+}

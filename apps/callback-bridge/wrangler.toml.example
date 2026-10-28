@@ -1,0 +1,19 @@
+# Copy to wrangler.toml and fill in your own values. Do not commit account IDs or secrets.
+name = "abdm-callback-bridge"
+main = "src/worker.ts"
+compatibility_date = "2026-10-01"
+
+[vars]
+# Confirm the gateway key set URL for your environment in the ABDM sandbox documentation.
+ABDM_JWKS_URL = ""
+ABDM_ISSUER = ""
+# ABDM_AUDIENCE = ""
+
+[[d1_databases]]
+binding = "DB"
+database_name = "abdm-callbacks"
+database_id = ""
+
+# Then: wrangler d1 execute abdm-callbacks --remote --file schema.sql
+#       wrangler secret put INBOX_TOKEN
+#       openssl rand -base64 32 | wrangler secret put STORAGE_KEY

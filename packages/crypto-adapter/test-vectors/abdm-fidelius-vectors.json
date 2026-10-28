@@ -1,0 +1,140 @@
+{
+  "version": "1.0",
+  "generator": "fidelius-cli 1.2.0 via Java 21 (direct CLI invocation)",
+  "generated_at": "2026-04-11",
+  "note": "All vectors use Weierstrass Curve25519 (the only curve supported by fidelius-cli). Each vector was verified via Java encrypt\u2192decrypt round-trip.",
+  "vectors": [
+    {
+      "name": "canonical_readme",
+      "description": "Canonical test vector from fidelius-cli README \u2014 the reference interop test",
+      "curve": "curve25519",
+      "sender": {
+        "privateKey": "AYhVZpbVeX4KS5Qm/W0+9Ye2q3rnVVGmqRICmseWni4=",
+        "publicKey": "BABVt+mpRLMXiQpIfEq6bj8hlXsdtXIxLsspmMgLNI1SR5mHgDVbjHO2A+U4QlMddGzqyEidzm1AkhtSxSO2Ahg=",
+        "nonce": "lmXgblZwotx+DfBgKJF0lZXtAXgBEYr5khh79Zytr2Y="
+      },
+      "receiver": {
+        "privateKey": "DMxHPri8d7IT23KgLk281zZenMfVHSdeamq0RhwlIBk=",
+        "publicKey": "BAheD5rUqTy4V5xR4/6HWmYpopu5CO+KO8BECS0udNqUTSNo91TIqIIy1A4Vh+F94c+n9vAcwXU2bGcfsI5f69Y=",
+        "nonce": "6uj1RdDUbcpI3lVMZvijkMC8Te20O4Bcyz0SyivX8Eg="
+      },
+      "plaintext": "Wormtail should never have been Potter cottage's secret keeper.",
+      "encryptedData": "pzMvVZNNVtJzqPkkxcCbBUWgDEBy/mBXIeT2dJWI16ZAQnnXUb9lI+S4k8XK6mgZSKKSRIHkcNvJpllnBg548wUgavBa0vCRRwdL6kY6Yw==",
+      "intermediates": {
+        "sharedSecret": "HZbc9a4h9kMAReILN5VtvbSYHWQpfIcrZ9pWHlQZUHs="
+      }
+    },
+    {
+      "name": "simple_ascii",
+      "description": "Simple ASCII text",
+      "curve": "curve25519",
+      "sender": {
+        "privateKey": "BTk3ehWJ/2u4ioScaq0STSGIPfNUunQq4Iumxwu6TBY=",
+        "publicKey": "BAFMAlSuZkVRkDGDCO4Swh039RoEUn4Ygk3s39ULBRN6cqNkBMAFbCSJzcvxMbIAMg8ktuhXLhPDVwIaIV2LKi0=",
+        "nonce": "eIsZq+jA7+fKuGF3a3of7J1/Q8OyLin7sVWDXOgCpls="
+      },
+      "receiver": {
+        "privateKey": "AvACq37eLbAGaGc1dHyIoodIepVuFCwnmybIGcLW488=",
+        "publicKey": "BHAlpFYLa82uBBanO5JdPUTmU5TAZWpGQzt135IegCQaf2uTMoaBdJLU2w2pnSfL9ITh5fcVVV/o2ElqL4XEn9E=",
+        "nonce": "ApKHKALnQMRVIprer0MHWVCQtydF4f3/ySIsx2eJAt8="
+      },
+      "plaintext": "Hello ABDM",
+      "encryptedData": "5WEvRQVUxPKnN3ln/xY6lO7M4yBKE2P+SMw=",
+      "intermediates": {}
+    },
+    {
+      "name": "single_char",
+      "description": "Single character plaintext",
+      "curve": "curve25519",
+      "sender": {
+        "privateKey": "AZlGhXbfhtF4TlCFZahvqfJC48OWajhYrTcNxrdV8bw=",
+        "publicKey": "BFyzRGeSN6tB0eHtlttSUSEM0BMNlFvw3VcihWgTmx5LNrN3xERetyAvoj5VQ8lcivHMlNHMS4J/ydiusTBWN4U=",
+        "nonce": "IJ75TQJtEHDHrxLUVyPf5t4cSAC8bEetK8Q0kfYvDYk="
+      },
+      "receiver": {
+        "privateKey": "AQGGtjSTu6z69BGDVgOWOA60qrZ271TTWNKXLVqq9eg=",
+        "publicKey": "BDoS2t59Kl/DJFFO/qPMQt7GCv3DDHFHurqOElrNajgfcJs7nhje6hSpfsF64RcZtlZdI0+kvfD7smdxxVRyRZk=",
+        "nonce": "y17RJmoP+n7W85Q8fiA78zeXB/wi/BR4vSIKfAI08WI="
+      },
+      "plaintext": "A",
+      "encryptedData": "yQfgCOJyx91yJVuKG+SrWCU=",
+      "intermediates": {}
+    },
+    {
+      "name": "fhir_json",
+      "description": "FHIR Patient JSON payload",
+      "curve": "curve25519",
+      "sender": {
+        "privateKey": "ChSPRljpU9lky0/ywSkB/i15LGlyscOXmgvImEiEtTg=",
+        "publicKey": "BHdmTRQdHwWHhIftcUkPouYyWylQsFtMNtPG+b/tVjnyMXPU9TrJyH0HqaOsJq+iGHEz3Mv73JTzjbkNSVDFNSo=",
+        "nonce": "zpM2FzVvnzRc7S5sZlJWlFYwUvDTDIppVTkf2mpyE24="
+      },
+      "receiver": {
+        "privateKey": "AmhtboVv/c3j9Lv87ZlaKmzxdf/9lJiLd4Evdj/6Cn4=",
+        "publicKey": "BEOjTYcng+1ncfwSiBx1fQAOqRVukVvDfBKO8aExXzUoNy0L8PD16S5S5dPEmaBgReOKXrz42d+KmLKcHummx/E=",
+        "nonce": "rr08nPoOU0bcOJ8QnzS+rMtcCCRpb+I8LPD9i+shRt8="
+      },
+      "plaintext": "{\"resourceType\":\"Patient\",\"id\":\"example\",\"name\":[{\"family\":\"Doe\",\"given\":[\"John\"]}]}",
+      "encryptedData": "r48JqIxp42ZN/YHIuJlQza4epTzCpZ8t2PnU5Gntl4b1MSpBPlRe+tOL5BdQ8XjAn8asPs1YFKm4dgVLf9VOE8hh+QzFM3qQqLpjuj63xlet/eznn/SOP6hfO6DWOo8FmU4jug==",
+      "intermediates": {}
+    },
+    {
+      "name": "special_chars",
+      "description": "Numbers and special characters",
+      "curve": "curve25519",
+      "sender": {
+        "privateKey": "Dn4dK0BmVbcq3WxNRUHm6lXHwSyOn/1xPnX1J6HmLdQ=",
+        "publicKey": "BHNdKNFOuMBVh39u5Y/mJ5T4P3wMThRG5gST+kd6bTHrQK7ZRpGs4rcek9faFdPO+37U6NEeo/0Bbnwps+QACSc=",
+        "nonce": "ySqL1UcSvjjIV5sJMkkzb2NUXhfft0P6aQR4k57F0MQ="
+      },
+      "receiver": {
+        "privateKey": "DGzUr63fxx1pEt11+AillG2ew2CXlxVn614j4Hi/oDg=",
+        "publicKey": "BGThUKi5XJg8W7nJZTrOPcOQ4G45WdaxwMI+mSWdRqTiN7LnDVxsqQrbyN9zKM0vxszMfAxJZZI1sC1sdih9p3c=",
+        "nonce": "TPH3XeOneTilg2B/6NYSCku00Im4EeuOaZ9bFOxiPP8="
+      },
+      "plaintext": "Test 123 !@#$%^&*()_+-=[]{}|;:,.<>?",
+      "encryptedData": "FsxKDlRuofN2AWWkpeAuJiCIyCfT9vgLMOsWha+W7B9Fd+uvoCFvYwDaS7/Gfflp5yFc",
+      "intermediates": {}
+    },
+    {
+      "name": "repeated_data",
+      "description": "Repeated pattern (1000 chars)",
+      "curve": "curve25519",
+      "sender": {
+        "privateKey": "A8N4I96ELkxe9XhSjATog2eG2FUXLTqXLDAZ1MQ/MGA=",
+        "publicKey": "BHuCwEx5Jg3CKDRLbXqKukNVcgSznefXUEG5kCBriog7aMcAb8Ng2dY37kb/CoAbIyOpVvGiKRwhBg031MBWKxw=",
+        "nonce": "sjBDMe+FHAVZ4ijorax+tqhOLFIenmHnyo3Wumb0xOU="
+      },
+      "receiver": {
+        "privateKey": "DUm8N0W6Zc0Hp867C9363v8n6WCt1EWuKszM6o8OEb8=",
+        "publicKey": "BBaKHeDLtaiO4e4VFPpBZH21s6wC/SGRyZuRe17ULUYtWI2y/3p91M85gNCJrOeFr58QV8iqROQjaF7d2sGR6k4=",
+        "nonce": "DatcesrUJ2P8vOIEiERj74mqpTCYvjmYEjmHVR1Qnhg="
+      },
+      "plaintext": "ABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDMABDM",
+      "encryptedData": "dzhJH5g2aOw+EINcSa9lLVNxof6gOTXRogbMbIeqifvh+MJ/7MOTbfJzSTm37eIOK6ygPUroyFBchIhgbnd4C5FeLetKPZrItpKFenVVfn3+KMoC9YrfOetIOM3pw5SgbvW/I8j1wM0jAz1IWAjCWLwjoh2JGE1tptmkSfkPtiBsLbNngq9jxprhcPSgSUkKUAWrDhHzqAhhpW1cOp7X5uFcGmOGKkzJ8YD0NI1uGisi5odE43+CRnykmuX/u7TcZoKXi1LbkQqn4Z0pMHvfHEuyCXMaDXDYO9JxJJ5055J9ZPPIBL4JoMqBv56J8Kla6rdj+vxVDhgJNuyasaacRoXc9ng5TY+8MJiu2KWtB8fU8x4CgkVzBYkXoSjpZDdLn0nykvDG4bRQxQPH9dWSCh08VBoiHzg67I5KmW7a51LqHW7Mahb5hC4sRzNcAY13/GWKfL/g8ztTUg56K3LGktylxaB4EQR0Kg9f7Y1cBAfU2I7dvI7aVVabekbZf4bDf8i1rYgbio/umcYm9Il6/Nd6BRsY5bqXespAcCtTDv3y0X5/AA2qaS2FAv1VtPnL4FDtCDcx1B1xoSPh/ZvwbLlIt74Gj8q7PMVrD+qhK9xaj/7f3FXhel/LvBNSfrxuUgtagMA7mt1APKYuBtQkQagdZZ4LcXZXJVYyxynPLqQXiym7D+UF+iuw5kwhWC+LMwcT98VapbTYh4g3KqUFG/wuvQfsFLsEWNHcpDunx/KAsl2595mjulb9C12P9PcGw+6IsqeqH7piSDnZdDGq9p0VTtKSUEPEvwKkB88bfjqKSHhG/lJJrmUCC6LB4lK6njcjHexGb6bY/tc7gYU1cFfNHlU/opVVo9cx5urSThZUtuTNPX/Efx5mbqdYWqsKqIZRwytlfVgwnKMo878oDwUYuVQSGuz8u1cg/Utze39XluUvLRqcQgdcAcArq8sDYYKFjIQWRpOtka5q8PFC8BedLi4UFTM3hlVbI702MmtSF5Wc2oht0AEj0jyYQBkzUrLMq1gV1JUvPip0g0opf0wcl77IxpQ14tQNYpc41YUfD94sk7Tv1HYFb3Q/iXHOhiNp5+yDCRKKaxlB3Jw1k7OprTlWRwDDVY+qfREvVaD00NWZS/fPOk8IVgzwPJpj4Udd4lL9TI94SoqKSqcSO5DvDFngMNn4QfTdjz7ZJi5/3Q8x/+qY2io5vDM8HhmeYWnUuxAEE3wkHkyDqFNwivMlNtrAbTDWV6zZVgzO80jUpSoY8vP/9uTLH8wfYtwlVNU0uK49Ua3tfqGk7i5Vltd3p8Daj5fN42URi+bi/0F2paCmXJCw3ZgdtnbE3F488IZz7mg1DYw=",
+      "intermediates": {}
+    },
+    {
+      "name": "canonical_x509_pubkey",
+      "description": "Decrypt using X.509-encoded sender public key (same as canonical vector)",
+      "curve": "curve25519",
+      "sender": {
+        "privateKey": "AYhVZpbVeX4KS5Qm/W0+9Ye2q3rnVVGmqRICmseWni4=",
+        "publicKey": "BABVt+mpRLMXiQpIfEq6bj8hlXsdtXIxLsspmMgLNI1SR5mHgDVbjHO2A+U4QlMddGzqyEidzm1AkhtSxSO2Ahg=",
+        "nonce": "lmXgblZwotx+DfBgKJF0lZXtAXgBEYr5khh79Zytr2Y="
+      },
+      "receiver": {
+        "privateKey": "DMxHPri8d7IT23KgLk281zZenMfVHSdeamq0RhwlIBk=",
+        "publicKey": "BAheD5rUqTy4V5xR4/6HWmYpopu5CO+KO8BECS0udNqUTSNo91TIqIIy1A4Vh+F94c+n9vAcwXU2bGcfsI5f69Y=",
+        "nonce": "6uj1RdDUbcpI3lVMZvijkMC8Te20O4Bcyz0SyivX8Eg="
+      },
+      "senderX509PublicKey": "MIIBMTCB6gYHKoZIzj0CATCB3gIBATArBgcqhkjOPQEBAiB/////////////////////////////////////////7TBEBCAqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqYSRShRAQge0Je0Je0Je0Je0Je0Je0Je0Je0Je0Je0JgtenHcQyGQEQQQqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq0kWiCuGaG4oIa04B7dLHdI0UySPU1+bXxhsinpxaJ+ztPZAiAQAAAAAAAAAAAAAAAAAAAAFN753qL3nNZYEmMaXPXT7QIBCANCAAQAVbfpqUSzF4kKSHxKum4/IZV7HbVyMS7LKZjICzSNUkeZh4A1W4xztgPlOEJTHXRs6shInc5tQJIbUsUjtgIY",
+      "receiverX509PublicKey": "MIIBMTCB6gYHKoZIzj0CATCB3gIBATArBgcqhkjOPQEBAiB/////////////////////////////////////////7TBEBCAqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqYSRShRAQge0Je0Je0Je0Je0Je0Je0Je0Je0Je0Je0JgtenHcQyGQEQQQqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq0kWiCuGaG4oIa04B7dLHdI0UySPU1+bXxhsinpxaJ+ztPZAiAQAAAAAAAAAAAAAAAAAAAAFN753qL3nNZYEmMaXPXT7QIBCANCAAQIXg+a1Kk8uFecUeP+h1pmKaKbuQjvijvARAktLnTalE0jaPdUyKiCMtQOFYfhfeHPp/bwHMF1NmxnH7COX+vW",
+      "plaintext": "Wormtail should never have been Potter cottage's secret keeper.",
+      "encryptedData": "pzMvVZNNVtJzqPkkxcCbBUWgDEBy/mBXIeT2dJWI16ZAQnnXUb9lI+S4k8XK6mgZSKKSRIHkcNvJpllnBg548wUgavBa0vCRRwdL6kY6Yw==",
+      "intermediates": {
+        "sharedSecret": "HZbc9a4h9kMAReILN5VtvbSYHWQpfIcrZ9pWHlQZUHs="
+      }
+    }
+  ]
+}

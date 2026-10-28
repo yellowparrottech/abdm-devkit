@@ -1,0 +1,31 @@
+---
+title: Try it in your browser
+description: Click through a consent request and a record fetch against the practice ABDM, and see every message your app sends and receives, and what ABDM sends back.
+sidebar:
+  order: 2
+---
+
+import { Aside } from "@astrojs/starlight/components";
+import Walkthrough from "../../../components/Walkthrough.astro";
+
+This page runs the real DevKit, with its practice ABDM, inside your browser. Click each step in order. For every step you will see:
+
+- **You send** and **You get back**: the exact HTTP request your app makes to the DevKit's REST API, and the reply. Your app would do the same.
+- **Dashed boxes**: messages between the DevKit and ABDM behind the scenes, including what ABDM sends you and what you must reply.
+
+Everything uses made-up data and stays in your browser. Long encrypted values are shortened so the shape is easy to read.
+
+<Walkthrough />
+
+## What to notice
+
+- **Nothing reaches ABDM until a person approves.** Step 1 only prepares; step 2 sends.
+- **ABDM answers later, by calling you.** Every ABDM message must get a `202 Accepted` reply straight away. In production the [callback bridge](/guides/callback-bridge/) does this, so nothing is lost.
+- **The patient decides what is shared.** Try "approve prescriptions only" or "refuse" above and watch the fetch change or get refused.
+- **The records arrive encrypted** and only the DevKit can open them, using a key made for that one transfer. See [Encryption](/concepts/encryption/).
+
+<Aside type="note" title="About the ABDM messages shown">
+The dashed boxes show ABDM's messages in the DevKit's own form, after translation. ABDM's V2 and V3 APIs use different field names; the DevKit's ABDM client converts between them. The exact ABDM formats will be added here once they are confirmed in ABDM's test system.
+</Aside>
+
+Ready to run it on your computer? Follow the [Quickstart](/start/quickstart/).

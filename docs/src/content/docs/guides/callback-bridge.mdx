@@ -1,0 +1,59 @@
+---
+title: Callback bridge
+description: Receive ABDM's replies reliably on your own host or cloud, for when you connect to ABDM's test system.
+sidebar:
+  order: 3
+---
+
+import { Steps } from "@astrojs/starlight/components";
+import CallbackBridgeFlow from "../../../components/CallbackBridgeFlow.astro";
+
+You only need this when you connect to ABDM's test system or production. The practice ABDM does not need it.
+
+**Why it exists.** ABDM replies later, by calling a public web address you give it ("the patient approved", "here are the records"), and expects an immediate `202 Accepted`. Your laptop has no public address, a busy server can miss a message, and ABDM's retry behaviour is not guaranteed. The bridge is a small service you run on your own host or cloud that durably records every reply it receives and keeps it until the DevKit collects it. It cannot record a reply that never reaches it, for example while it is unreachable, so your software should still cope with missing, late and repeated replies.
+
+<CallbackBridgeFlow />
+
+- **It checks every message really came from ABDM** (ABDM signs its messages). This also blocks fake record deliveries.
+- **It ignores repeats and old messages**, remembering every message for a day even after it is collected, so a replayed message cannot change anything.
+- **It stores first, answers second**, so nothing it accepted is lost if the DevKit is busy or offline. Stored messages are encrypted, so the database never holds anything readable.
+- **The DevKit pulls** from the bridge with its own password, so the DevKit can run anywhere, even on a laptop.
+
+## Set it up
+
+The bridge is a standard web app with a small storage interface, so it can run on any host or cloud with a database store for that platform. A ready-made setup for **Cloudflare Workers** with Cloudflare's D1 database is included; the steps below use it. You need a Cloudflare account (the free plan is enough) and its `wrangler` command-line tool.
+
+<Steps>
+1. Go to the bridge folder and copy the example settings:
+
+    ```sh
+    cd apps/callback-bridge
+    cp wrangler.toml.example wrangler.toml
+    ```
+
+2. Create the database (Cloudflare's D1, included in the free plan) and its table:
+
+    ```sh
+    wrangler d1 create abdm-callbacks
+    wrangler d1 execute abdm-callbacks --remote --file schema.sql
+    ```
+
+    Paste the database ID it prints into `wrangler.toml`.
+
+3. Set the password the DevKit will use to collect messages, and the key that encrypts stored messages:
+
+    ```sh
+    wrangler secret put INBOX_TOKEN
+    openssl rand -base64 32 | wrangler secret put STORAGE_KEY
+    ```
+
+    Keep a copy of the storage key in your password manager: without it, messages not yet collected cannot be read.
+
+4. Add the address of ABDM's public signing keys (`ABDM_JWKS_URL`) and the name ABDM signs as (`ABDM_ISSUER`) to `wrangler.toml`, then deploy:
+
+    ```sh
+    wrangler deploy
+    ```
+</Steps>
+
+The bridge refuses all traffic until the signing-key address, the signer's name, the password and the storage key are all set. The exact values for ABDM's V3 APIs are still being confirmed in ABDM's test system.

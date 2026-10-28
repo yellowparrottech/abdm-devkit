@@ -1,0 +1,16 @@
+node_modules/
+dist/
+coverage/
+.wrangler/
+*.tsbuildinfo
+.env
+.env.*
+!.env.example
+.DS_Store
+mcpb/server/
+build/
+*.mcpb
+.dev.vars
+.astro/
+apps/callback-bridge/wrangler.toml
+docs/public/openapi.json

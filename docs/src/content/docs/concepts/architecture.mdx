@@ -1,0 +1,37 @@
+---
+title: Architecture
+description: How the DevKit is built, and why your app, an AI assistant and TypeScript code all get the same safety checks.
+sidebar:
+  order: 1
+---
+
+import DevKitLayers from "../../../components/DevKitLayers.astro";
+
+All the ABDM logic and every safety rule live in one place, the **DevKit workflows**. The REST API and the AI tools are thin doors into it, so no way in can skip a check. Nothing in the core depends on AI.
+
+<DevKitLayers />
+
+## The packages
+
+| Layer | Package | In plain words |
+| --- | --- | --- |
+| Ways in | `abdm-mcp-server`, `abdm-mcp-adapter` | Tools for AI assistants |
+| | `abdm-rest-adapter`, `abdm-devkit` (command line) | REST API for any language |
+| Workflows | `abdm-workflows` | Consent requests, record fetches, approvals, permissions and the audit log |
+| Building blocks | `abdm-consent-engine` | Rules for what a consent allows |
+| | `abdm-crypto` | ABDM's encryption |
+| | `abdm-fhir` | Builds and checks health records |
+| | `abdm-client` | Talks to ABDM's APIs (V2 and V3) |
+| Foundation | `abdm-core` | Shared names, dates and types |
+| Practice and tests | `abdm-mock-gateway`, `abdm-fixtures` | The practice ABDM and made-up patients and records |
+| Servers | `abdm-callback-bridge` | Receives ABDM's replies on your host or cloud (a Cloudflare Workers setup is included) |
+
+## Where it runs
+
+- **Practice ABDM:** anywhere Node.js 22 runs.
+- **Calls to ABDM's real systems:** must come from a network ABDM accepts. ABDM restricts which networks can call it, so check this when you choose where your server runs.
+- **Callback bridge:** on your host or cloud. It only receives messages from ABDM. A ready-made setup for Cloudflare Workers is included.
+
+## API versions
+
+ABDM has two current API versions. Creating health IDs (M1) uses V3. For sharing records (M2 and M3), ABDM's own guidance says V3 is not yet stable, so the DevKit can use V2 or V3 for each step, chosen in settings.

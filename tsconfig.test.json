@@ -1,0 +1,56 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "composite": false,
+    "declaration": false,
+    "allowImportingTsExtensions": false,
+    "paths": {
+      "@yellowparrottech/abdm-callback-bridge": [
+        "./apps/callback-bridge/src/index.ts"
+      ],
+      "@yellowparrottech/abdm-devkit": [
+        "./apps/cli/src/index.ts"
+      ],
+      "@yellowparrottech/abdm-mcp-server": [
+        "./apps/mcp-server/src/index.ts"
+      ],
+      "@yellowparrottech/abdm-client": [
+        "./packages/abdm-client/src/index.ts"
+      ],
+      "@yellowparrottech/abdm-consent-engine": [
+        "./packages/consent-engine/src/index.ts"
+      ],
+      "@yellowparrottech/abdm-core": [
+        "./packages/core/src/index.ts"
+      ],
+      "@yellowparrottech/abdm-crypto": [
+        "./packages/crypto-adapter/src/index.ts"
+      ],
+      "@yellowparrottech/abdm-fhir": [
+        "./packages/fhir/src/index.ts"
+      ],
+      "@yellowparrottech/abdm-fixtures": [
+        "./packages/fixtures/src/index.ts"
+      ],
+      "@yellowparrottech/abdm-mcp-adapter": [
+        "./packages/mcp-adapter/src/index.ts"
+      ],
+      "@yellowparrottech/abdm-mock-gateway": [
+        "./packages/mock-gateway/src/index.ts"
+      ],
+      "@yellowparrottech/abdm-rest-adapter": [
+        "./packages/rest-adapter/src/index.ts"
+      ],
+      "@yellowparrottech/abdm-workflows": [
+        "./packages/workflows/src/index.ts"
+      ]
+    }
+  },
+  "include": [
+    "apps/*/src/**/*.ts",
+    "packages/*/src/**/*.ts",
+    "tests/**/*.ts",
+    "vitest.config.ts"
+  ]
+}

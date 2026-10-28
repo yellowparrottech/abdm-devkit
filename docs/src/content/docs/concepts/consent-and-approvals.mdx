@@ -1,0 +1,28 @@
+---
+title: Consent and approvals
+description: The journey from asking for consent to reading a record, step by step, and what is checked at each step.
+sidebar:
+  order: 2
+---
+
+import ConsentJourney from "../../../components/ConsentJourney.astro";
+
+Two different people say yes before a record moves:
+
+- **Your user** (a doctor or staff member using your app) approves each request before the DevKit sends it. The DevKit makes sure an approval exists, belongs to that user and matches the request exactly; showing it to a real person, and authenticating them, is your app's job.
+- **The patient** approves in their ABHA app. The DevKit never approves on a patient's behalf.
+
+<ConsentJourney />
+
+## Step by step
+
+1. **Prepare a consent request.** The DevKit checks it (record types, purpose, dates, expiry) and that your user may act for your facility. It returns a plain-English summary. Nothing is sent yet.
+2. **Your user approves.** The approval works once, expires after 10 minutes, belongs to that user and covers exactly that request. The DevKit checks everything again, then sends it.
+3. **The patient decides.** ABDM reports back. If the patient approved more than was asked (which should never happen), the DevKit rejects it. Repeated or out-of-order messages are handled safely.
+4. **Prepare and approve a fetch.** The fetch must fit inside what the patient approved: same facility, record types and dates, before the consent ends. The DevKit makes a fresh encryption key for this transfer.
+5. **The hospital sends the records,** encrypted so that only the DevKit can read them. Only the first delivery is accepted; late, unexpected or unreadable ones are rejected.
+6. **You read the records.** Consent is checked again every time. Once it is withdrawn, expires or no longer covers the records, they are deleted.
+
+## What gets logged
+
+Every decision is written to an audit log: who did what, under which consent, for which record types, and whether it was allowed. **Patient details and record contents are never logged.**

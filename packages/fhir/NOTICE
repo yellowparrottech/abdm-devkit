@@ -1,0 +1,22 @@
+YellowParrot ABDM DevKit
+Copyright 2026 YellowParrot Technologies Private Limited
+
+This product is licensed under the Apache License, Version 2.0.
+
+This project is not affiliated with, endorsed by or certified by the
+National Health Authority (NHA) or the Ayushman Bharat Digital Mission (ABDM).
+
+Third-party terminology:
+- Synthetic fixtures may contain codes from SNOMED CT. SNOMED CT is a
+  registered trademark of SNOMED International. Use of SNOMED CT is subject to
+  the SNOMED CT licence terms of the country of use.
+- Synthetic fixtures may contain LOINC codes. This material contains content
+  from LOINC (https://loinc.org). LOINC is copyright Regenstrief Institute,
+  Inc. and the LOINC Committee and is available at no cost under the licence at
+  https://loinc.org/license.
+
+Third-party test data:
+- packages/crypto-adapter/test-vectors/abdm-fidelius-vectors.json is from
+  abdm_fidelius 0.1.0 (https://pub.dev/packages/abdm_fidelius), Copyright (c)
+  2026 Prashant Sharma, under the MIT License (see
+  packages/crypto-adapter/test-vectors/abdm-fidelius-LICENSE).

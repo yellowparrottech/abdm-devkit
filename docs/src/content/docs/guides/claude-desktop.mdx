@@ -1,0 +1,65 @@
+---
+title: Claude Desktop
+description: Ask Claude to request consent and fetch health records from the practice ABDM, confirming each step yourself.
+sidebar:
+  order: 1
+---
+
+import { Aside, Steps, Tabs, TabItem } from "@astrojs/starlight/components";
+
+Claude can use the DevKit's tools through **MCP** (Model Context Protocol), the standard way AI assistants use tools. You chat in plain English; Claude calls the tools; **you confirm every request before anything is sent**. Everything runs against the practice ABDM with made-up data.
+
+## Install
+
+<Tabs>
+  <TabItem label="As an extension (easiest)">
+    <Steps>
+    1. In the DevKit folder, build the extension:
+
+        ```sh
+        pnpm install && pnpm bundle:mcpb
+        ```
+
+    2. Open `build/abdm-devkit.mcpb` with Claude Desktop, or go to **Settings → Extensions → Install from file**.
+    3. Confirm the install. The tools appear in Claude's tools menu.
+    </Steps>
+  </TabItem>
+  <TabItem label="From a local build">
+    <Steps>
+    1. Build the DevKit: `pnpm install && pnpm build`.
+    2. In Claude Desktop, open **Settings → Developer → Edit Config** and add the server, using full paths (`which node` shows yours):
+
+        ```json
+        {
+          "mcpServers": {
+            "abdm-devkit": {
+              "command": "/full/path/to/node",
+              "args": ["/full/path/to/abdm-devkit/apps/mcp-server/dist/main.js"]
+            }
+          }
+        }
+        ```
+
+    3. Restart Claude Desktop.
+    </Steps>
+  </TabItem>
+</Tabs>
+
+<Aside type="note" title="Not yet tested in Claude Desktop">
+The server and extension pass automated tests with the official MCP client libraries and Anthropic's extension validator, but have not yet been tried in a Claude Desktop release. Please report what you find.
+</Aside>
+
+<Aside type="caution">
+Claude must be able to show you confirmation prompts (MCP calls this "elicitation"). If your version cannot, the tools that send requests stop with an error and nothing is sent.
+</Aside>
+
+## Try these, one at a time
+
+1. "What practice scenarios are available?"
+2. "Request consent from asha.rao1@sbx for care management, for prescriptions and diagnostic reports from 2025, valid until the end of next month." **Confirm** when asked.
+3. "Check the status of that consent." The simulated patient approves after a few seconds.
+4. "Fetch the prescriptions under that consent." **Confirm** when asked.
+5. "Show me the records you received."
+6. "Request consent again, but this time the patient should refuse. Then try to fetch records under it." The fetch is refused, as it should be.
+
+The practice ABDM forgets everything when Claude Desktop restarts.

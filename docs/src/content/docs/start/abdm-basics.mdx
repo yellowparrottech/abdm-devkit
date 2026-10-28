@@ -1,0 +1,54 @@
+---
+title: ABDM in plain words
+description: What ABDM is, who takes part, how a health record moves between them, and what the M1, M2 and M3 milestones mean.
+sidebar:
+  order: 1
+---
+
+import AbdmEcosystem from "../../../components/AbdmEcosystem.astro";
+
+**ABDM** (the Ayushman Bharat Digital Mission) is India's national system for moving health records between hospitals, clinics, labs and patients, with the patient's permission. It is run by the National Health Authority (NHA).
+
+The key idea: **records stay where they were created**. In ABDM's consent-based sharing, which this DevKit covers, they move to another organisation only after the patient agrees. (Patients can also share their own records directly from their ABHA app.)
+
+## Who takes part
+
+| Who | In ABDM terms | What they do |
+| --- | --- | --- |
+| A person | **ABHA holder** | Has an ABHA (Ayushman Bharat Health Account): a health ID number and an address like `asha.rao@abdm`. Uses an ABHA app to approve or refuse requests. |
+| A hospital, lab or clinic that holds records | **HIP**, health information provider | Links its records to the patient's ABHA and sends them when consent allows. |
+| A hospital, clinic, insurer or app that wants records | **HIU**, health information user | Asks for consent and receives records. |
+| ABDM itself | **Gateway** and **consent manager** | Passes messages between everyone and keeps track of consents. It never stores the records. |
+
+The same hospital is often both: a HIP for records it created, and a HIU when it wants records from elsewhere.
+
+## How a record moves
+
+<AbdmEcosystem />
+
+1. The **HIU** (say, a clinic seeing a new patient) asks for consent through ABDM: which records, for what purpose, for which dates, and for how long.
+2. ABDM asks the **patient**, who approves or refuses in their ABHA app. The patient can also approve less than was asked.
+3. With consent granted, the HIU asks for the records. ABDM tells the **HIP** (the hospital that has them).
+4. The HIP encrypts the records so that only that HIU can read them, and sends them straight to the HIU.
+
+The records are standard **FHIR** documents (an international format for health data), in the shapes India's NRCeS publishes for ABDM.
+
+## The milestones: M1, M2 and M3
+
+NHA certifies software in three parts, called milestones. You will see them everywhere in ABDM documentation:
+
+| Milestone | Plain meaning | You are acting as |
+| --- | --- | --- |
+| **M1** | Create and verify patients' ABHA health IDs | Any facility |
+| **M2** | Link your records to patients' ABHAs and share them when consent allows | A HIP, the one holding records |
+| **M3** | Request consent and receive records | A HIU, the one wanting records |
+
+Software must pass at least two milestones, functional testing and a security audit before NHA gives it production access.
+
+## What the DevKit covers today
+
+- **M3 (requesting consent and receiving records):** the full flow, against the built-in practice ABDM (the "mock").
+- **M2:** the hospital's side is simulated inside the mock, so you can test the receiving end.
+- **M1:** planned.
+
+All of it runs with synthetic (made-up) data until you connect your own ABDM sandbox account. See the [glossary](/reference/glossary/) for any other terms.
