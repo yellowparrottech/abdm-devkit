@@ -4,7 +4,18 @@ updates:
     directory: /
     schedule:
       interval: weekly
+    groups:
+      actions:
+        patterns: ["*"]
   - package-ecosystem: npm
     directory: /
     schedule:
       interval: weekly
+    groups:
+      # Patch and minor updates arrive as one pull request; major updates stay separate.
+      minor-and-patch:
+        update-types: [minor, patch]
+    ignore:
+      # Types follow the Node.js versions we support (22 and 24), not the newest release.
+      - dependency-name: "@types/node"
+        update-types: ["version-update:semver-major"]
